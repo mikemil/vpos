@@ -1,0 +1,100 @@
+package com.jda.portfolio.service
+
+import com.jda.portfolio.domain.Configuration
+import com.jda.portfolio.domain.PriceLookupBean
+
+import groovyx.net.http.RESTClient
+import static groovyx.net.http.ContentType.XML
+import static groovyx.net.http.ContentType.TEXT
+
+class PriceLookupService {
+
+    boolean transactional = false
+
+
+    def getPriceLookupXML(PriceLookupBean lookupBean) {
+
+        def writer = new StringWriter()
+        def builder = new groovy.xml.MarkupBuilder(writer)
+        builder.pricelookup {
+           delegate.storeId lookupBean.storeId
+           delegate.registerId lookupBean.registerId
+           delegate.msgSequence lookupBean.msgSequence
+           delegate.msgDateTime lookupBean.msgDateTime
+           skus {
+              for(x in lookupBean.skus)
+                sku(x)
+           }
+           discounts {
+              for(y in lookupBean.discounts)
+                discount(y)
+           }
+        }
+        writer.toString()
+    }
+
+    def priceLookup(PriceLookupBean lookupBean) {
+
+        def conf = Configuration.get(1)
+        
+        if (conf != null) {
+
+           def ppos = new RESTClient( conf.protocol+"//"+conf.server+":"+conf.port)
+
+           def resp = ppos.put( path: conf.context + conf.url, 
+                                contentType:XML,
+                                requestContentType: XML,
+                                body: {
+                                   pricelookup {
+                                       delegate.storeId lookupBean.storeId
+                                       delegate.registerId lookupBean.registerId
+                                       delegate.msgSequence lookupBean.msgSequence
+                                       delegate.msgDateTime lookupBean.msgDateTime
+                                       skus {
+                                          for(x in lookupBean.skus)
+                                             sku(x)
+                                       }
+                                       discounts {
+                                          for(y in lookupBean.discounts)
+                                              discount(y)
+                                       }
+                                   }
+                                }
+                              )
+
+           println "Status="+resp.status
+           if (resp.status == 200) {
+               //println resp.data.getClass().getName()
+           }
+
+        }
+
+    }
+}
+
+//  code below WAS inside the PUT call and worked but I want to be able 
+//  to display the xml string that I sent in the request
+//{
+//                                   pricelookup {
+//                                       delegate.storeId lookupBean.storeId
+//                                       delegate.registerId lookupBean.registerId
+//                                       delegate.msgSequence lookupBean.msgSequence
+//                                       delegate.msgDateTime lookupBean.msgDateTime
+//                                       skus {
+//                                          for(x in lookupBean.skus)
+//                                             sku(x)
+//                                       }
+//                                       discounts {
+//                                          for(y in lookupBean.discounts)
+//                                              discount(y)
+//                                       }
+//                                   }
+//                                }
+
+
+
+        
+        
+
+
+

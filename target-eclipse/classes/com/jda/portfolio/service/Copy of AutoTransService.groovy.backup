@@ -1,0 +1,192 @@
+package com.jda.portfolio.service
+
+import com.jda.portfolio.domain.Configuration
+import com.jda.portfolio.domain.TransactionSpec
+
+import groovyx.net.http.RESTClient
+import groovyx.net.http.HTTPBuilder
+import static groovyx.net.http.ContentType.XML
+import static groovyx.net.http.ContentType.TEXT
+import static groovyx.net.http.Method.PUT
+
+class AutoTransService {
+    
+    boolean transactional = false
+
+    def getXML(TransactionSpec txnSpec) {
+
+        def writer = new StringWriter()
+        def builder = new groovy.xml.MarkupBuilder(writer)
+        builder.TransactionSpec (training:txnSpec.training) {
+           delegate.transClassName txnSpec.transClassName
+           delegate.locationNumber txnSpec.locationNumber
+           delegate.currencyCode txnSpec.currencyCode
+           AssociateSpec {
+               delegate.associateNumber txnSpec.associateSpec.associateNumber 
+           }
+           delegate.terminalName txnSpec.terminalName
+           LineItemSpecs {
+               for (item in txnSpec.lineItemSpecs) {
+                    LineItemSpec {
+                       sku(item.sku)
+                       quantity(item.quantity)
+                   }
+               }
+           }
+           TenderSpecs {
+               for (tender in txnSpec.tenderSpecs) {
+                   TenderSpec {
+                       tenderCode (tender.tenderCode)
+                       cardNumber(tender.cardNumber)
+                       expiryDate(tender.expiryDate)
+                       track1Data(tender.track1Data)
+                       track2Data(tender.track2Data)
+                       track3Data(tender.track3Data)
+                       preLockNumber(tender.preLockNumber)
+                       preLockAmount(tender.preLockAmount)
+                       amount(tender.amount)
+                       precision(tender.precision)
+                   }
+               }
+           }
+        }
+        writer.toString()
+    }
+
+    def txnCreate(TransactionSpec txnSpec, String userid, String pswd) {
+
+        def conf = Configuration.get(3)
+        if (conf != null) {
+           def ppos = new HTTPBuilder( conf.protocol+"//"+conf.server+":"+conf.port, TEXT )
+           ppos.headers = [Accept:'application/xml', 'ppos-user':userid, 'ppos-pswd':pswd]
+           
+           try {
+             ppos.request( PUT ) {
+                   uri.path = conf.context + conf.url
+                   send( groovyx.net.http.ContentType.XML ) {
+                    TransactionSpec (training:txnSpec.training) {
+                        delegate.transClassName txnSpec.transClassName
+                        delegate.locationNumber txnSpec.locationNumber
+                        delegate.currencyCode txnSpec.currencyCode
+                        AssociateSpec {
+                            delegate.associateNumber txnSpec.associateSpec.associateNumber 
+                        }
+                        delegate.terminalName txnSpec.terminalName
+                        LineItemSpecs {
+                            for (item in txnSpec.lineItemSpecs) {
+                                LineItemSpec {
+                                    sku(item.sku)
+                                    quantity(item.quantity)
+                                }
+                            }
+                        }
+                        TenderSpecs {
+                            for (tender in txnSpec.tenderSpecs) {
+                                TenderSpec {
+                                    tenderCode(tender.tenderCode)
+                                    cardNumber(tender.cardNumber)
+                                    expiryDate(tender.expiryDate)
+                                    track1Data(tender.track1Data)
+                                    track2Data(tender.track2Data)
+                                    track3Data(tender.track3Data)
+                                    preLockNumber(tender.preLockNumber)
+                                    preLockAmount(tender.preLockAmount)
+                                    amount(tender.amount)
+                                    precision(tender.precision)
+                                }
+                            }
+                        }
+                     }   
+                   }
+                   // success handler
+                   response.success = { resp, reader ->
+                        //return reader.text
+                        // pretty print format the response
+						def stringWriter = new StringWriter()
+                        def node = new XmlParser().parseText(reader.text);
+                        new XmlNodePrinter(new PrintWriter(stringWriter)).print(node)
+						return stringWriter.toString()
+                   }
+                   // failure handler
+                   response.failure = { resp ->
+                      //println 'request failed'
+                      return 'Response status='+resp.status
+                   }
+             }
+           } catch(Exception e) {
+               log.error("Caught exception:", e)
+               return e.toString()
+           }
+        }
+    }
+
+    // probably can have one method - that takes the TransactionSpec
+    // and a Configuration object - get the config object in the controller
+    // so I can reuse the service method
+    
+      def autoService(TransactionSpec txnSpec, Configuration conf, String userid, String pswd) {
+
+           def ppos = new HTTPBuilder( conf.protocol+"//"+conf.server+":"+conf.port, TEXT )
+           
+           try {
+             ppos.request( PUT ) {
+                   uri.path = conf.context + conf.url
+                   headers = [Accept:'application/xml', 'ppos-user':userid, 'ppos-pswd':pswd]
+                   send( groovyx.net.http.ContentType.XML ) {
+                       //revisit this builder to build the entire set 
+                    TransactionSpec (training:txnSpec.training) {
+                        delegate.transClassName txnSpec.transClassName
+                        delegate.locationNumber txnSpec.locationNumber
+                        delegate.currencyCode txnSpec.currencyCode
+                        AssociateSpec {
+                            delegate.associateNumber txnSpec.associateSpec.associateNumber 
+                        }
+                        delegate.terminalName txnSpec.terminalName
+                        LineItemSpecs {
+                            LineItemSpec {
+                                for (item in txnSpec.lineItemSpecs) {
+                                    sku(item.sku)
+                                    quantity(item.quantity)
+                                }
+                            }
+                        }
+                        TenderSpecs {
+                            TenderSpec {
+                                for (tender in txnSpec.tenderSpecs) {
+                                    tenderCode (tender.tenderCode)
+                                    cardNumber(tender.cardNumber)
+                                    expiryDate(tender.expiryDate)
+                                    track1Data(tender.track1Data)
+                                    track2Data(tender.track2Data)
+                                    track3Data(tender.track3Data)
+                                    preLockNumber(tender.preLockNumber)
+                                    preLockAmount(tender.preLockAmount)
+                                    amount(tender.amount)
+                                    precision(tender.precision)
+                                }
+                            }
+                        }
+                     }   
+                   }
+                   // success handler
+                   response.success = { resp, reader ->
+                       //pretty print format the response
+					   def stringWriter = new StringWriter()
+                       def node = new XmlParser().parseText(reader.text);
+                       new  XmlNodePrinter(new PrintWriter(stringWriter)).print(node)
+        			   return stringWriter.toString()
+                   }
+                   // failure handler
+                   response.failure = { resp ->
+                      println 'request failed'
+                      return 'Response status='+resp.status
+                   }
+             }
+           } catch(Exception e) {
+               log.error("Caught exception:", e)
+               return e.toString()
+           }
+    }
+    
+    
+}

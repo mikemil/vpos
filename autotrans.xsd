@@ -1,0 +1,848 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" >
+  <xs:complexType name="transItemSpecValidationResult">
+    <xs:sequence>
+      <xs:element type="xs:string" name="exceptionName" minOccurs="0"/>
+      <xs:element type="xs:string" name="msg" minOccurs="0"/>
+      <xs:element type="xs:int" name="status" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="discountSpec">
+    <xs:annotation>
+      <xs:documentation>This class defines a discount that can be applied an automated transaction. The discount can be associated with either the transaction itself, or a specific line item within the transaction.</xs:documentation>
+    </xs:annotation>
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="ResultSpecs">
+        <xs:complexType>
+          <xs:sequence>
+	          <xs:element type="transItemSpecValidationResult" name="Result" minOccurs="0" maxOccurs="unbounded"/>
+		  </xs:sequence>
+		</xs:complexType>
+      </xs:element>
+      <xs:element type="xs:string" name="discountCode" minOccurs="0"/>
+      <xs:element type="xs:long" name="amount" minOccurs="1"/>
+      <xs:element type="xs:int" name="precision" minOccurs="1"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="TransactionSpec">
+    <xs:annotation>
+      <xs:documentation>This class represents the specification of an automated transaction. From the information in this object, a transaction object will be created with the appropriate line items, tenders, coupons, discounts, etc. That transaction can then be saved in the database the same as any other transaction.</xs:documentation>
+    </xs:annotation>
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="ResultSpecs">
+        <xs:complexType>
+          <xs:sequence>
+	          <xs:element type="transItemSpecValidationResult" name="Result" minOccurs="0" maxOccurs="unbounded"/>
+		  </xs:sequence>
+		</xs:complexType>
+      </xs:element>
+      <xs:element name="TransBeanSpec" minOccurs="0">
+        <xs:complexType>
+    	  <xs:choice maxOccurs="unbounded">
+            <xs:element type="xs:string" name="postVoidedTransactionNumber" minOccurs="0"/>
+            <xs:element type="xs:string" name="transId" minOccurs="0"/>
+            <xs:element type="xs:string" name="transactionNumber" minOccurs="0"/>
+            <xs:element type="xs:string" name="locationNumber" minOccurs="0"/>
+            <xs:element type="xs:string" name="tillName" minOccurs="0"/>
+            <xs:element type="xs:string" name="terminalName" minOccurs="0"/>
+            <xs:element type="xs:string" name="comments" minOccurs="0"/>
+            <xs:element type="xs:string" name="language" minOccurs="0"/>
+            <xs:element type="xs:string" name="postalCode" minOccurs="0"/>
+            <xs:element type="xs:string" name="discountRule" minOccurs="0"/>
+            <xs:element type="xs:string" name="customerNumber" minOccurs="0"/>
+            <xs:element type="xs:string" name="customerFirstName" minOccurs="0"/>
+            <xs:element type="xs:string" name="customerLastName" minOccurs="0"/>
+            <xs:element type="xs:string" name="encodedCustomerFirstName" minOccurs="0"/>
+            <xs:element type="xs:string" name="encodedCustomerLastName" minOccurs="0"/>
+            <xs:element type="xs:string" name="extendedSaleNumber" minOccurs="0"/>
+            <xs:element type="xs:string" name="extendedSaleStorageRef" minOccurs="0"/>
+            <xs:element type="xs:string" name="originalTransactionNumber" minOccurs="0"/>
+            <xs:element type="xs:string" name="reportType" minOccurs="0"/>
+            <xs:element type="xs:string" name="financialReason" minOccurs="0"/>
+            <xs:element type="xs:string" name="taxExemptionNumber" minOccurs="0"/>
+            <xs:element type="xs:string" name="taxAreaCode" minOccurs="0"/>
+            <xs:element type="xs:string" name="savingsType" minOccurs="0"/>
+            <xs:element type="xs:string" name="priceCategoryDesc" minOccurs="0"/>
+            <xs:element type="xs:string" name="printingLanguage" minOccurs="0"/>
+	   	    <xs:element name="TransDiscountSpecs">
+		      <xs:complexType>
+		        <xs:sequence>
+		            <xs:element name="TransDiscountSpec" minOccurs="0" maxOccurs="unbounded">
+		              <xs:complexType>
+    					<xs:choice maxOccurs="unbounded">
+		                  <xs:element type="xs:string" name="discCode" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="discName" minOccurs="0"/>
+		                  <xs:element type="xs:long" name="discLineId" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="discRate" minOccurs="1"/>
+		                  <xs:element type="xs:int" name="ratePrecision" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="amount" minOccurs="1"/>
+		                  <xs:element type="xs:int" name="amountPrecision" minOccurs="1"/>
+		                  <xs:element type="xs:int" name="rateType" minOccurs="1"/>
+		                  <xs:element type="xs:boolean" name="associatePrompt" minOccurs="1"/>
+		                  <xs:element type="xs:boolean" name="partial" minOccurs="1"/>
+		                  <xs:element type="xs:boolean" name="postTax" minOccurs="1"/>
+				   	      <xs:element name="TransDiscountSpreadSpecs">
+					        <xs:complexType>
+					          <xs:sequence>
+				                  <xs:element name="TransDiscountSpreadSpec" minOccurs="0" maxOccurs="unbounded">
+				                    <xs:complexType>
+				                      <xs:sequence>
+				                  		<xs:element type="xs:long" name="lineId" minOccurs="1"/>
+				                  		<xs:element type="xs:long" name="lineAmount" minOccurs="1"/>
+				                      </xs:sequence>
+				                    </xs:complexType>
+				                  </xs:element>
+						       </xs:sequence>
+						    </xs:complexType>
+						  </xs:element>
+		                </xs:choice>
+		              </xs:complexType>
+		            </xs:element>
+			     </xs:sequence>
+			  </xs:complexType>
+			</xs:element>
+	   	    <xs:element name="TransTaxSpecs">
+		      <xs:complexType>
+		        <xs:sequence>
+		            <xs:element name="TransTaxSpec" minOccurs="0" maxOccurs="unbounded">
+		              <xs:complexType>
+    					<xs:choice maxOccurs="unbounded">
+		                  <xs:element type="xs:string" name="taxAuthority" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="taxCode" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="taxAreaCode" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="taxName" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="exemptNumber" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="regNumber" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="abbrCode" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="receiptCode" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="taxAreaName" minOccurs="0"/>
+		                  <xs:element type="xs:long" name="taxDetailId" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="taxId" minOccurs="1"/>
+		                  <xs:element type="xs:boolean" name="exempt" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="taxValue" minOccurs="1"/>
+		                  <xs:element type="xs:int" name="taxValuePrecision" minOccurs="1"/>
+		                  <xs:element type="xs:int" name="taxValueType" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="regularTaxAmt" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="serviceFeeTaxAmt" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="printRegAmt" minOccurs="1"/>
+		                  <xs:element type="xs:boolean" name="overridden" minOccurs="1"/>
+		                  <xs:element type="xs:boolean" name="inclusive" minOccurs="1"/>
+		                </xs:choice>
+		              </xs:complexType>
+		            </xs:element>
+			     </xs:sequence>
+			  </xs:complexType>
+			</xs:element>
+	   	    <xs:element name="TransCashOutSpecs">
+		      <xs:complexType>
+		        <xs:sequence>
+		            <xs:element name="TransCashOutSpec" minOccurs="0" maxOccurs="unbounded">
+		              <xs:complexType>
+    					<xs:choice maxOccurs="unbounded">
+		                  <xs:element type="xs:string" name="tenderCode" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="currencyCode" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="tenderDescription" minOccurs="0"/>
+		                  <xs:element type="xs:long" name="tenderId" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="declaredAmt" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="actualAmt" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="exchangeRate" minOccurs="0"/>
+		                  <xs:element type="xs:int" name="exchangeOperator" minOccurs="0"/>
+		                  <xs:element type="xs:int" name="exchangeRatePrecision" minOccurs="0"/>
+		                </xs:choice>
+		              </xs:complexType>
+		            </xs:element>
+			     </xs:sequence>
+			  </xs:complexType>
+			</xs:element>
+	   	    <xs:element name="TransTenderSpecs">
+		      <xs:complexType>
+		        <xs:sequence>
+		            <xs:element name="TransTenderSpec" minOccurs="0" maxOccurs="unbounded">
+		              <xs:complexType>
+    					<xs:choice maxOccurs="unbounded">
+		                  <xs:element type="xs:string" name="tenderCode" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="tenderName" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="tenderShortName" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="currencyName" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="ident1Code" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="ident1Number" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="ident2Code" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="ident2Number" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="abaNumber" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="accountHolderName" minOccurs="0">
+		                    <xs:annotation>
+		                      <xs:documentation>This field is obsolete as of 7.5.2. It is being maintained for backward compatibility only</xs:documentation>
+		                    </xs:annotation>
+		                  </xs:element>
+		                  <xs:element type="xs:string" name="encodedAccountHolderName1" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="encodedAccountHolderName2" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="currencyCode" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="encodedTenderExpiryDate" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="encodedAccountNumber" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="accountNumberHash" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="signerName" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="signerNumber" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="poNumber" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="paymentPlanCode" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="paymentPlanName" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="unencodedAccountNumber" minOccurs="0"/>
+		                  <xs:element type="xs:long" name="tenderLineId" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="tenderType" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="tenderAmt" minOccurs="1"/>
+		                  <xs:element type="xs:boolean" name="tenderDeleted" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="foreignAmount" minOccurs="1"/>
+		                  <xs:element type="xs:int" name="amountPrecision" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="exchangeRate" minOccurs="1"/>
+		                  <xs:element type="xs:int" name="exchangeRatePrecision" minOccurs="1"/>
+		                  <xs:element type="xs:boolean" name="swiped" minOccurs="1"/>
+		                  <xs:element type="xs:boolean" name="idSwiped" minOccurs="1"/>
+		                  <xs:element type="xs:int" name="exchangeOperator" minOccurs="1"/>
+		                  <xs:element type="xs:dateTime" name="tenderExpiryDate" minOccurs="0"/>
+		                  <xs:element type="xs:int" name="tenderSubType" minOccurs="1"/>
+		                </xs:choice>
+		              </xs:complexType>
+		            </xs:element>
+			     </xs:sequence>
+			  </xs:complexType>
+			</xs:element>
+	   	    <xs:element name="TransMultiChannelSpecs">
+		      <xs:complexType>
+		        <xs:sequence>
+		            <xs:element type="transMultiChannelSpec" name="TransMultiChannelSpec" minOccurs="0" maxOccurs="unbounded"/>
+			     </xs:sequence>
+			  </xs:complexType>
+			</xs:element>
+	   	    <xs:element name="TransLineSpecs">
+		      <xs:complexType>
+		        <xs:sequence>
+		            <xs:element name="TransLineSpec" minOccurs="0" maxOccurs="unbounded">
+		              <xs:complexType>
+    					<xs:choice maxOccurs="unbounded">
+		                  <xs:element type="xs:string" name="comments" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="description" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="sku" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="serialNumber" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="encodedSerialNumber" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="refundReason" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="refundReasonCode" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="upcEntered" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="taxArea" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="vendorPartNumber" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="vendorName" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="signerName" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="signerNumber" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="encodedAccountNumber" minOccurs="0"/>
+				   	      <xs:element name="TransLinePriceSpecs">
+					        <xs:complexType>
+					          <xs:sequence>
+				                  <xs:element name="TransLinePriceSpec" minOccurs="0" maxOccurs="unbounded">
+				                    <xs:complexType>
+    						      	  <xs:choice maxOccurs="unbounded">
+				                        <xs:element type="xs:string" name="reason" minOccurs="0"/>
+				                        <xs:element type="xs:string" name="reasonCode" minOccurs="0"/>
+				                        <xs:element type="xs:string" name="eventName" minOccurs="0"/>
+				                        <xs:element type="xs:string" name="priceBookNumber" minOccurs="0"/>
+				                        <xs:element type="xs:string" name="competitor" minOccurs="0"/>
+				                        <xs:element type="xs:string" name="competitorCode" minOccurs="0"/>
+					                    <xs:element type="xs:int" name="priceType" minOccurs="1"/>
+					                    <xs:element type="xs:long" name="amount" minOccurs="1"/>
+					                    <xs:element type="xs:long" name="originalAmount" minOccurs="1"/>
+					                    <xs:element type="xs:int" name="amountPrecision" minOccurs="1"/>
+					                    <xs:element type="xs:boolean" name="promotional" minOccurs="1"/>
+					                    <xs:element type="xs:long" name="eventNumber" minOccurs="0"/>
+					                    <xs:element type="xs:long" name="originalEventNumber" minOccurs="0"/>
+					                    <xs:element type="xs:boolean" name="alternatePriceBook" minOccurs="1"/>
+					                    <xs:element type="xs:boolean" name="confirmPrice" minOccurs="1"/>
+					                    <xs:element type="xs:long" name="overrideEventNumber" minOccurs="0"/>
+					                    <xs:element type="xs:boolean" name="externalPriceLookupSuccess" minOccurs="1"/>
+				                      </xs:choice>
+				                    </xs:complexType>
+				                  </xs:element>
+						       </xs:sequence>
+						    </xs:complexType>
+						  </xs:element>
+				   	      <xs:element name="TransLineTaxSpecs">
+					        <xs:complexType>
+					          <xs:sequence>
+				                  <xs:element name="TransLineTaxSpec" minOccurs="0" maxOccurs="unbounded">
+				                    <xs:complexType>
+    						      	  <xs:choice maxOccurs="unbounded">
+				                        <xs:element type="xs:string" name="taxAuthority" minOccurs="0"/>
+				                        <xs:element type="xs:string" name="taxCode" minOccurs="0"/>
+				                        <xs:element type="xs:string" name="receiptCode" minOccurs="0"/>
+				                        <xs:element type="xs:string" name="abbrCode" minOccurs="0"/>
+					                    <xs:element type="xs:long" name="taxId" minOccurs="1"/>
+					                    <xs:element type="xs:boolean" name="exempt" minOccurs="1"/>
+					                    <xs:element type="xs:boolean" name="overridden" minOccurs="1"/>
+					                    <xs:element type="xs:long" name="estimatedTax" minOccurs="0"/>
+					                    <xs:element type="xs:boolean" name="inclusive" minOccurs="1"/>
+					                    <xs:element type="xs:long" name="taxAmount" minOccurs="0"/>
+					                    <xs:element type="xs:long" name="taxRate" minOccurs="0"/>
+					                    <xs:element type="xs:int" name="taxType" minOccurs="1"/>
+					                    <xs:element type="xs:int" name="taxRatePrecision" minOccurs="1"/>
+					                    <xs:element type="xs:int" name="taxAmountPrecision" minOccurs="1"/>
+				                      </xs:choice>
+				                    </xs:complexType>
+				                  </xs:element>
+						       </xs:sequence>
+						    </xs:complexType>
+						  </xs:element>
+				   	      <xs:element name="TransLineDiscSpecs">
+					        <xs:complexType>
+					          <xs:sequence>
+				                  <xs:element name="TransLineDiscSpec" minOccurs="0" maxOccurs="unbounded">
+				                    <xs:complexType>
+    								  <xs:choice maxOccurs="unbounded">
+				                        <xs:element type="xs:string" name="discCode" minOccurs="0"/>
+				                        <xs:element type="xs:string" name="discName" minOccurs="0"/>
+				                  		<xs:element type="xs:long" name="discLineId" minOccurs="1"/>
+				                  		<xs:element type="xs:long" name="discRate" minOccurs="1"/>
+				                  		<xs:element type="xs:int" name="ratePrecision" minOccurs="1"/>
+				                  		<xs:element type="xs:long" name="amount" minOccurs="1"/>
+				                  		<xs:element type="xs:int" name="amountPrecision" minOccurs="1"/>
+				                  		<xs:element type="xs:int" name="rateType" minOccurs="1"/>
+				                  		<xs:element type="xs:boolean" name="associatePrompt" minOccurs="1"/>
+				                  		<xs:element type="xs:boolean" name="quantityBased" minOccurs="1"/>
+				                      </xs:choice>
+				                    </xs:complexType>
+				                  </xs:element>
+						       </xs:sequence>
+						    </xs:complexType>
+						  </xs:element>
+				   	      <xs:element name="TransLineAssociateSpecs">
+					        <xs:complexType>
+					          <xs:sequence>
+				                  <xs:element name="TransLineAssociateSpec" minOccurs="0" maxOccurs="unbounded">
+				                    <xs:complexType>
+    								  <xs:choice maxOccurs="unbounded">
+				                        <xs:element type="xs:string" name="associateNumber" minOccurs="0"/>
+				                        <xs:element type="xs:string" name="firstName" minOccurs="0"/>
+				                        <xs:element type="xs:string" name="lastName" minOccurs="0"/>
+				                  		<xs:element type="xs:int" name="associateType" minOccurs="1"/>
+				                      </xs:choice>
+				                    </xs:complexType>
+				                  </xs:element>
+						       </xs:sequence>
+						    </xs:complexType>
+						  </xs:element>
+		                  <xs:element type="xs:string" name="shortDescription" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="originalLocationNumber" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="originalTransactionNumber" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="failedOriginalTransNumber" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="originalCashierNumber" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="originalSalesAssociateNumber" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="originalCustomerNumber" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="contractNumber" minOccurs="0"/>
+		                  <xs:element type="transMultiChannelSpec" name="transMultiChannelBean" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="dispositionCode" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="dispositionLicensePlate" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="multiChannelReturnAck" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="unencodedAccountNumber" minOccurs="0"/>
+		                  <xs:element type="xs:long" name="transLineId" minOccurs="1"/>
+		                  <xs:element type="xs:int" name="transLineType" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="quantity" minOccurs="1"/>
+		                  <xs:element type="xs:int" name="quantityPrecision" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="total" minOccurs="1"/>
+		                  <xs:element type="xs:boolean" name="serializable" minOccurs="1"/>
+		                  <xs:element type="xs:boolean" name="giftReceipt" minOccurs="1"/>
+		                  <xs:element type="xs:boolean" name="refund" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="discountTotal" minOccurs="1"/>
+		                  <xs:element type="xs:int" name="itemType" minOccurs="1"/>
+		                  <xs:element type="xs:boolean" name="openGc" minOccurs="1"/>
+		                  <xs:element type="xs:boolean" name="lineDeleted" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="originalTransLineId" minOccurs="0"/>
+		                  <xs:element type="xs:long" name="remainder" minOccurs="0"/>
+		                  <xs:element type="xs:long" name="returnTotal" minOccurs="0"/>
+		                  <xs:element type="xs:long" name="quantityReturned" minOccurs="0"/>
+		                  <xs:element type="xs:int" name="quantityReturnedPrecision" minOccurs="0"/>
+		                  <xs:element type="xs:dateTime" name="originalBusinessDate" minOccurs="0"/>
+		                  <xs:element type="xs:long" name="originalPriceAmount" minOccurs="0"/>
+		                  <xs:element type="xs:long" name="inclusiveTax" minOccurs="0"/>
+		                  <xs:element type="xs:long" name="estimatedExclusivePrice" minOccurs="0"/>
+		                  <xs:element type="xs:long" name="baseItemLineID" minOccurs="0"/>
+		                  <xs:element type="xs:long" name="parentTransLineId" minOccurs="0"/>
+		                  <xs:element type="xs:long" name="multiChannelLineId" minOccurs="0"/>
+		                  <xs:element type="xs:long" name="postTaxDiscountAmount" minOccurs="1"/>
+		                  <xs:element type="xs:boolean" name="GSAItem" minOccurs="1"/>
+				   	      <xs:element name="TransLinePromptSpecs">
+					        <xs:complexType>
+					          <xs:sequence>
+				                  <xs:element name="TransLinePromptSpec" minOccurs="0" maxOccurs="unbounded">
+				                    <xs:complexType>
+    								  <xs:choice maxOccurs="unbounded">
+				                        <xs:element type="xs:string" name="printMessage" minOccurs="0"/>
+							   	        <xs:element name="TransLinePromptDetailSpecs">
+								          <xs:complexType>
+								            <xs:sequence>
+						                        <xs:element name="TransLinePromptDetailSpec" minOccurs="0" maxOccurs="unbounded">
+						                          <xs:complexType>
+    												<xs:choice maxOccurs="unbounded">
+						                              <xs:element type="xs:string" name="label" minOccurs="0"/>
+						                              <xs:element type="xs:string" name="mask" minOccurs="0"/>
+						                              <xs:element type="xs:string" name="value" minOccurs="0"/>
+						                  			  <xs:element type="xs:int" name="transLinePromptDetailLineId" minOccurs="1"/>
+						                  			  <xs:element type="xs:int" name="sequenceNumber" minOccurs="1"/>
+						                            </xs:choice>
+						                          </xs:complexType>
+						                        </xs:element>
+									         </xs:sequence>
+									      </xs:complexType>
+									    </xs:element>
+				                        <xs:element type="xs:string" name="promptNumber" minOccurs="0"/>
+				                        <xs:element type="xs:string" name="outputTypeName" minOccurs="0"/>
+				                  		<xs:element type="xs:int" name="transLinePromptLineId" minOccurs="1"/>
+				                  		<xs:element type="xs:long" name="promptTypeId" minOccurs="1"/>
+				                  		<xs:element type="xs:boolean" name="repeatable" minOccurs="1"/>
+				                  		<xs:element type="xs:int" name="sequenceNumber" minOccurs="1"/>
+				                      </xs:choice>
+				                    </xs:complexType>
+				                  </xs:element> 
+						       </xs:sequence>
+						    </xs:complexType>
+						  </xs:element> 
+		                </xs:choice>
+		              </xs:complexType>
+		            </xs:element> 
+			     </xs:sequence>
+			  </xs:complexType>
+			</xs:element> 
+	   	    <xs:element name="TransAssociateSpecs">
+		      <xs:complexType>
+		        <xs:sequence>
+		            <xs:element name="TransAssociateSpec" minOccurs="0" maxOccurs="unbounded">
+		              <xs:complexType>
+    					<xs:choice maxOccurs="unbounded">
+		                  <xs:element type="xs:string" name="associateNumber" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="firstName" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="lastName" minOccurs="0"/>
+		                  <xs:element type="xs:int" name="associateType" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="associateLineId" minOccurs="1"/>
+		                </xs:choice>
+		              </xs:complexType>
+		            </xs:element>
+			     </xs:sequence>
+			  </xs:complexType>
+			</xs:element>
+	   	    <xs:element name="TransLostAuthSpecs">
+		      <xs:complexType>
+		        <xs:sequence>
+		            <xs:element name="TransLostAuthSpec" minOccurs="0" maxOccurs="unbounded">
+		              <xs:complexType>
+    					<xs:choice maxOccurs="unbounded">
+		                  <xs:element type="xs:string" name="responseData" minOccurs="0"/>
+		                  <xs:element type="xs:long" name="lostAuthLineId" minOccurs="1"/>
+		                  <xs:element type="xs:int" name="originalReversedStatus" minOccurs="1"/>
+		                  <xs:element type="xs:int" name="authProviderNumber" minOccurs="1"/>
+		                  <xs:element type="xs:boolean" name="settlementRequired" minOccurs="1"/>
+		                  <xs:element type="xs:boolean" name="settlementStatus" minOccurs="1"/>
+		                  <xs:element type="xs:dateTime" name="settlementBusinessDate" minOccurs="0"/>
+		                </xs:choice>
+		              </xs:complexType>
+		            </xs:element>
+			     </xs:sequence>
+			  </xs:complexType>
+			</xs:element>
+	   	    <xs:element name="TransLocationSpecs">
+		      <xs:complexType>
+		        <xs:sequence>
+		            <xs:element name="TransLocationSpec" minOccurs="0" maxOccurs="unbounded">
+		              <xs:complexType>
+    					<xs:choice maxOccurs="unbounded">
+		                  <xs:element type="xs:string" name="locationName" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="homeCurrency" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="locationNumber" minOccurs="0"/>
+		                  <xs:element type="xs:long" name="locationLineId" minOccurs="1"/>
+		                  <xs:element type="xs:int" name="amountPrecision" minOccurs="1"/>
+		                  <xs:element type="xs:int" name="locationType" minOccurs="1"/>
+		                </xs:choice>
+		              </xs:complexType>
+		            </xs:element>
+			     </xs:sequence>
+			  </xs:complexType>
+			</xs:element>
+	   	    <xs:element name="TransCouponSpecs">
+		      <xs:complexType>
+		        <xs:sequence>
+		            <xs:element name="TransCouponSpec" minOccurs="0" maxOccurs="unbounded">
+		              <xs:complexType>
+		                <xs:choice maxOccurs="unbounded">
+		                  <xs:element type="xs:string" name="couponBarcode" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="eventName" minOccurs="0"/>
+		                  <xs:element type="xs:long" name="couponLineId" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="eventNumber" minOccurs="1"/>
+		                  <xs:element type="xs:boolean" name="applied" minOccurs="1"/>
+		                </xs:choice>
+		              </xs:complexType>
+		            </xs:element>
+			     </xs:sequence>
+			  </xs:complexType>
+			</xs:element>
+	   	    <xs:element name="TransBounceBackSpecs">
+		      <xs:complexType>
+		        <xs:sequence>
+		            <xs:element name="TransBounceBackSpec" minOccurs="0" maxOccurs="unbounded">
+		              <xs:complexType>
+		                <xs:choice maxOccurs="unbounded">
+		                  <xs:element type="xs:string" name="bouncebackBarcode" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="encodedBouncebackBarcode" minOccurs="0"/>
+		                  <xs:element type="xs:long" name="bouncebackLineId" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="bouncebackEventNumber" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="resultEventNumber" minOccurs="1"/>
+		                </xs:choice>
+		              </xs:complexType>
+		            </xs:element>
+			     </xs:sequence>
+			  </xs:complexType>
+			</xs:element>
+	   	    <xs:element name="TransAuthSpecs">
+		      <xs:complexType>
+		        <xs:sequence>
+		            <xs:element name="TransAuthSpec" minOccurs="0" maxOccurs="unbounded">
+		              <xs:complexType>
+		                <xs:choice maxOccurs="unbounded">
+		                  <xs:element type="xs:string" name="authBankTerminal" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="authDate" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="authTime" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="authStartTime" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="authNumber" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="authTransactionId" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="authCurrencyCode" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="journalKey" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="token" minOccurs="0">
+		                    <xs:annotation>
+		                      <xs:documentation>Support for tokenized providers</xs:documentation>
+		                    </xs:annotation>
+		                  </xs:element>
+		                  <xs:element type="xs:string" name="sequenceNumber" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="referenceNumber" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="ps2000" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="responseCode" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="cardName" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="avsResultCode" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="authProviderCustomData" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="invoiceNumber" minOccurs="0"/>
+					   	  <xs:element name="TransAuthParamSpecs">
+						    <xs:complexType>
+						      <xs:sequence>
+				                  <xs:element name="TransAuthParamSpec" minOccurs="0" maxOccurs="unbounded">
+				                    <xs:complexType>
+				                      <xs:choice maxOccurs="unbounded">
+				                        <xs:element type="xs:string" name="paramKey" minOccurs="0"/>
+				                        <xs:element type="xs:string" name="paramValue" minOccurs="0"/>
+				                        <xs:element type="xs:long" name="paramId" minOccurs="1"/>
+				                      </xs:choice>
+				                    </xs:complexType>
+				                  </xs:element>
+							  </xs:sequence>
+						    </xs:complexType>
+						  </xs:element>
+		                  <xs:element type="xs:long" name="transAuthId" minOccurs="1"/>
+		                  <xs:element type="xs:int" name="originalReversedStatus" minOccurs="1"/>
+		                  <xs:element type="xs:int" name="authMethod" minOccurs="1"/>
+		                  <xs:element type="xs:int" name="authType" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="origRequestAmount" minOccurs="1"/>
+		                  <xs:element type="xs:int" name="origRequestAmountPrecision" minOccurs="1"/>
+		                  <xs:element type="xs:int" name="responseCondition" minOccurs="1"/>
+		                  <xs:element type="xs:int" name="cardType" minOccurs="1"/>
+		                  <xs:element type="xs:int" name="cardSubType" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="remainingAccountBalance" minOccurs="0"/>
+		                  <xs:element type="xs:int" name="authProviderNumber" minOccurs="1"/>
+		                  <xs:element type="xs:boolean" name="settlementRequired" minOccurs="1"/>
+		                  <xs:element type="xs:boolean" name="settlementStatus" minOccurs="1"/>
+		                  <xs:element type="xs:dateTime" name="settlementBusinessDate" minOccurs="0"/>
+		                  <xs:element type="xs:int" name="posTerminalEntryCapability" minOccurs="1"/>
+		                  <xs:element type="xs:boolean" name="electronicDataCapture" minOccurs="1"/>
+		                  <xs:element type="xs:boolean" name="contactlessDataCapture" minOccurs="1"/>
+		                </xs:choice>
+		             </xs:complexType>
+		            </xs:element>
+			     </xs:sequence>
+			  </xs:complexType>
+			</xs:element>
+	   	    <xs:element name="TransRebateSpecs">
+		      <xs:complexType>
+		        <xs:sequence>
+		            <xs:element name="TransRebateSpec" minOccurs="0" maxOccurs="unbounded">
+		              <xs:complexType>
+		                <xs:choice maxOccurs="unbounded">
+		                  <xs:element type="xs:string" name="rebateBarcode" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="encodedBarcode" minOccurs="0"/>
+		                  <xs:element type="xs:long" name="transRebateId" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="rebateEventNumber" minOccurs="1"/>
+				   	      <xs:element name="TransRebateXrefSpecs">
+					        <xs:complexType>
+					          <xs:sequence>
+				                  <xs:element name="TransRebateXrefSpec" minOccurs="0" maxOccurs="unbounded">
+				                    <xs:complexType>
+				                      <xs:sequence/>
+				                      <xs:attribute type="xs:long" use="required" name="transLineId"/>
+				                    </xs:complexType>
+				                  </xs:element>
+						       </xs:sequence>
+						    </xs:complexType>
+						  </xs:element>
+		                </xs:choice>
+		              </xs:complexType>
+		            </xs:element>
+			     </xs:sequence>
+			  </xs:complexType>
+			</xs:element>
+	   	    <xs:element name="TransCustomerSpecs">
+		      <xs:complexType>
+		        <xs:sequence>
+		            <xs:element name="TransCustomerSpec" minOccurs="0" maxOccurs="unbounded">
+		              <xs:complexType>
+		                <xs:choice maxOccurs="unbounded">
+		                  <xs:element type="xs:string" name="dataSourceName" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="customerIdentifier" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="encryptedCustomerIdentifier" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="customerNumber" minOccurs="0"/>
+		                  <xs:element type="xs:int" name="custIdentSeqId" minOccurs="1"/>
+		                  <xs:element type="xs:int" name="dataSourceId" minOccurs="1"/>
+		                  <xs:element type="xs:boolean" name="validationSuccess" minOccurs="1"/>
+		                </xs:choice>
+		              </xs:complexType>
+		            </xs:element>
+			     </xs:sequence>
+			  </xs:complexType>
+			</xs:element>
+	   	    <xs:element name="TransPromptSpecs">
+		      <xs:complexType>
+		        <xs:sequence>
+		            <xs:element name="TransPromptSpec" minOccurs="0" maxOccurs="unbounded">
+		              <xs:complexType>
+		                <xs:choice maxOccurs="unbounded">
+		                  <xs:element type="xs:string" name="printMessage" minOccurs="0"/>
+				   	      <xs:element name="TransPromptDetailSpecs">
+					        <xs:complexType>
+					          <xs:sequence>
+				                  <xs:element name="TransPromptDetailSpec" minOccurs="0" maxOccurs="unbounded">
+				                    <xs:complexType>
+				                      <xs:choice maxOccurs="unbounded">
+				                        <xs:element type="xs:string" name="label" minOccurs="0"/>
+				                        <xs:element type="xs:string" name="mask" minOccurs="0"/>
+				                        <xs:element type="xs:string" name="value" minOccurs="0"/>
+				                  		<xs:element type="xs:long" name="transPromptDetailLineId" minOccurs="1"/>
+				                  		<xs:element type="xs:int" name="sequenceNumber" minOccurs="1"/>
+				                      </xs:choice>
+				                    </xs:complexType>
+				                  </xs:element>
+						       </xs:sequence>
+						    </xs:complexType>
+						  </xs:element>
+		                  <xs:element type="xs:string" name="promptNumber" minOccurs="0"/>
+		                  <xs:element type="xs:string" name="outputTypeName" minOccurs="0"/>
+		                  <xs:element type="xs:long" name="transPromptLineId" minOccurs="1"/>
+		                  <xs:element type="xs:long" name="promptTypeId" minOccurs="1"/>
+		                  <xs:element type="xs:boolean" name="repeatable" minOccurs="1"/>
+		                  <xs:element type="xs:int" name="sequenceNumber" minOccurs="1"/>
+		                </xs:choice>
+		              </xs:complexType>
+		            </xs:element>
+			     </xs:sequence>
+			  </xs:complexType>
+			</xs:element>
+            <xs:element type="xs:string" name="multiChannelSaleAck" minOccurs="0"/>
+            <xs:element type="xs:string" name="calculationStats" minOccurs="0"/>
+            <xs:element type="xs:string" name="maskedIdentNumber" minOccurs="0"/>
+            <xs:element type="xs:string" name="encodedIdentNumber" minOccurs="0"/>
+            <xs:element type="xs:string" name="identType" minOccurs="0"/>
+            <xs:element type="xs:boolean" name="seqNumRolledOver" minOccurs="1"/>
+            <xs:element type="xs:long" name="transTypeId" minOccurs="1"/>
+            <xs:element type="xs:int" name="status" minOccurs="1"/>
+            <xs:element type="xs:dateTime" name="startDatetime" minOccurs="0"/>
+            <xs:element type="xs:dateTime" name="endDatetime" minOccurs="0"/>
+            <xs:element type="xs:dateTime" name="businessDate" minOccurs="0"/>
+            <xs:element type="xs:dateTime" name="postingDatetime" minOccurs="0"/>
+            <xs:element type="xs:long" name="sequenceNumber" minOccurs="1"/>
+            <xs:element type="xs:long" name="grossSalesAmount" minOccurs="0"/>
+            <xs:element type="xs:long" name="netSalesAmount" minOccurs="0"/>
+            <xs:element type="xs:long" name="preDiscountSubTotal" minOccurs="0"/>
+            <xs:element type="xs:long" name="lineItemCount" minOccurs="0"/>
+            <xs:element type="xs:long" name="serviceFeeCount" minOccurs="0"/>
+            <xs:element type="xs:long" name="lineCorrectionCount" minOccurs="0"/>
+            <xs:element type="xs:long" name="lineCorrectionAmount" minOccurs="0"/>
+            <xs:element type="xs:long" name="lineRefundCount" minOccurs="0"/>
+            <xs:element type="xs:long" name="lineRefundAmount" minOccurs="0"/>
+            <xs:element type="xs:long" name="changeAmount" minOccurs="0"/>
+            <xs:element type="xs:long" name="grossExtendedSalesAmount" minOccurs="0"/>
+            <xs:element type="xs:long" name="netExtendedSalesAmount" minOccurs="0"/>
+            <xs:element type="xs:long" name="extendedSalePaymentAmount" minOccurs="0"/>
+            <xs:element type="xs:long" name="extendedSaleSubtype" minOccurs="0"/>
+            <xs:element type="xs:long" name="financialAmount" minOccurs="0"/>
+            <xs:element type="xs:long" name="totalTender" minOccurs="0"/>
+            <xs:element type="xs:long" name="totalTax" minOccurs="0"/>
+            <xs:element type="xs:long" name="openingFloat" minOccurs="0"/>
+            <xs:element type="xs:boolean" name="allTaxesExempt" minOccurs="0"/>
+            <xs:element type="xs:boolean" name="allTaxesOverridden" minOccurs="0"/>
+            <xs:element type="xs:long" name="serviceFeeTotalTax" minOccurs="0"/>
+            <xs:element type="xs:long" name="previousDeposits" minOccurs="0"/>
+            <xs:element type="xs:long" name="appliedDeposits" minOccurs="0"/>
+            <xs:element type="xs:long" name="amountPickedUp" minOccurs="0"/>
+            <xs:element type="xs:boolean" name="partialPickup" minOccurs="0"/>
+            <xs:element type="xs:long" name="merchandiseSalesAmount" minOccurs="0"/>
+            <xs:element type="xs:long" name="outstandingAmount" minOccurs="0"/>
+            <xs:element type="xs:dateTime" name="nextPaymentDate" minOccurs="0"/>
+            <xs:element type="xs:long" name="nextPaymentAmount" minOccurs="0"/>
+            <xs:element type="xs:long" name="nextPaymentCredit" minOccurs="0"/>
+            <xs:element type="xs:long" name="serviceFeeSalesAmount" minOccurs="0"/>
+            <xs:element type="xs:long" name="savingsAmount" minOccurs="0"/>
+            <xs:element type="xs:long" name="savingsPrecision" minOccurs="0"/>
+            <xs:element type="xs:long" name="kTime" minOccurs="0"/>
+            <xs:element type="xs:boolean" name="startOffline" minOccurs="1"/>
+            <xs:element type="xs:boolean" name="endOffline" minOccurs="1"/>
+            <xs:element type="xs:dateTime" name="storePostDatetime" minOccurs="0"/>
+            <xs:element type="xs:int" name="externalPriceLookupSuccess" minOccurs="1"/>
+            <xs:element type="xs:boolean" name="GSACustomer" minOccurs="1"/>
+            <xs:element type="xs:boolean" name="idSwiped" minOccurs="1"/>
+          </xs:choice>
+    	  <xs:attribute type="xs:boolean" use="required" name="training"></xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element type="xs:string" name="transClassName" minOccurs="0"/>
+      <xs:element type="xs:string" name="locationNumber" minOccurs="0"/>
+      <xs:element type="xs:string" name="currencyCode" minOccurs="0"/>
+      <xs:element name="AssociateSpec" minOccurs="0">
+        <xs:complexType>
+	      <xs:choice maxOccurs="unbounded">
+	        <xs:element name="ResultSpecs">
+	          <xs:complexType>
+	            <xs:sequence>
+		          <xs:element type="transItemSpecValidationResult" name="Result" minOccurs="0" maxOccurs="unbounded"/>
+		  	    </xs:sequence>
+			  </xs:complexType>
+	        </xs:element>
+            <xs:element type="xs:string" name="associateNumber" minOccurs="0"/>
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element type="xs:string" name="terminalName" minOccurs="0"/>
+      <xs:element name="CustomerSpec" minOccurs="0">
+        <xs:complexType>
+		    <xs:choice maxOccurs="unbounded">
+		      <xs:element name="ResultSpecs">
+		        <xs:complexType>
+		          <xs:sequence>
+			          <xs:element type="transItemSpecValidationResult" name="Result" minOccurs="0" maxOccurs="unbounded"/>
+				  </xs:sequence>
+				</xs:complexType>
+		      </xs:element>
+            <xs:element type="xs:string" name="customerNumber" minOccurs="0"/>
+            <xs:element type="xs:string" name="taxExemptNumber" minOccurs="0"/>
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+   	  <xs:element name="LineItemSpecs">
+	    <xs:complexType>
+	      <xs:sequence>
+		      <xs:element name="LineItemSpec" minOccurs="0" maxOccurs="unbounded">
+		        <xs:complexType>
+				  <xs:choice maxOccurs="unbounded">
+				      <xs:element name="ResultSpecs">
+				        <xs:complexType>
+				          <xs:sequence>
+					          <xs:element type="transItemSpecValidationResult" name="Result" minOccurs="0" maxOccurs="unbounded"/>
+					  	  </xs:sequence>
+						</xs:complexType>
+				      </xs:element>
+		            <xs:element type="xs:string" name="sku" minOccurs="0"/>
+		            <xs:element type="xs:string" name="overrideReasonCode" minOccurs="0"/>
+			   	    <xs:element name="DiscountSpecs">
+				      <xs:complexType>
+				        <xs:sequence>
+		            		<xs:element type="discountSpec" name="DiscountSpec" minOccurs="0" maxOccurs="unbounded"/>
+				        </xs:sequence>
+				      </xs:complexType>
+				    </xs:element>
+		            <xs:element type="xs:long" name="quantity" minOccurs="1"/>
+		            <xs:element type="xs:long" name="overridePrice" minOccurs="0"/>
+		            <xs:element type="xs:int" name="pricePrecision" minOccurs="0"/>
+		          </xs:choice>
+		        </xs:complexType>
+		      </xs:element>
+	      </xs:sequence>
+	    </xs:complexType>
+	  </xs:element>
+   	  <xs:element name="CouponSpecs">
+	    <xs:complexType>
+	      <xs:sequence>
+		      <xs:element name="CouponSpec" minOccurs="0" maxOccurs="unbounded">
+		        <xs:complexType>
+			    <xs:choice maxOccurs="unbounded">
+				    <xs:element name="ResultSpecs">
+				        <xs:complexType>
+				          <xs:sequence>
+					          <xs:element type="transItemSpecValidationResult" name="Result" minOccurs="0" maxOccurs="unbounded"/>
+						  </xs:sequence>
+						</xs:complexType>
+				    </xs:element>
+		            <xs:element type="xs:string" name="couponNumber" minOccurs="0"/>
+		          </xs:choice>
+		        </xs:complexType>
+		      </xs:element>
+	      </xs:sequence>
+	    </xs:complexType>
+	  </xs:element>
+   	  <xs:element name="DiscountSpecs">
+	    <xs:complexType>
+	      <xs:sequence>
+		      <xs:element type="discountSpec" name="DiscountSpec" minOccurs="0" maxOccurs="unbounded"/>
+	      </xs:sequence>
+	    </xs:complexType>
+	  </xs:element>
+   	  <xs:element name="TenderSpecs">
+	    <xs:complexType>
+	      <xs:sequence>
+		      <xs:element name="TenderSpec" minOccurs="0" maxOccurs="unbounded">
+		        <xs:complexType>
+			      <xs:choice maxOccurs="unbounded">
+				      <xs:element name="ResultSpecs">
+				        <xs:complexType>
+				          <xs:sequence>
+					          <xs:element type="transItemSpecValidationResult" name="Result" minOccurs="0" maxOccurs="unbounded"/>
+						  </xs:sequence>
+						</xs:complexType>
+				      </xs:element>
+		            <xs:element type="xs:string" name="tenderCode" minOccurs="0"/>
+		            <xs:element type="xs:string" name="cardNumber" minOccurs="0"/>
+		            <xs:element type="xs:string" name="expiryDate" minOccurs="0"/>
+		            <xs:element type="xs:string" name="track1Data" minOccurs="0"/>
+		            <xs:element type="xs:string" name="track2Data" minOccurs="0"/>
+		            <xs:element type="xs:string" name="track3Data" minOccurs="0"/>
+		            <xs:element type="xs:long" name="preLockNumber" minOccurs="0"/>
+		            <xs:element type="xs:long" name="preLockAmount" minOccurs="0"/>
+		            <xs:element type="xs:long" name="amount" minOccurs="0"/>
+		            <xs:element type="xs:int" name="precision" minOccurs="0"/>
+		          </xs:choice>
+		        </xs:complexType>
+		      </xs:element>
+	      </xs:sequence>
+	    </xs:complexType>
+	  </xs:element>
+    </xs:choice>
+    <xs:attribute type="xs:boolean" use="required" name="training"></xs:attribute>
+  </xs:complexType>
+  <xs:element type="TransactionSpec" name="TransactionSpec"></xs:element>
+  <xs:complexType name="transMultiChannelSpec">
+    <xs:annotation>
+      <xs:documentation>TransMultiChannelBean is the basic data bean encompassing data related to multi channel transaction header hbn.class table="TRANS_MULTI_CHANNEL"</xs:documentation>
+    </xs:annotation>
+    <xs:choice maxOccurs="unbounded">
+      <xs:element type="xs:string" name="multiChannelTransNumber" minOccurs="0"/>
+      <xs:element type="xs:string" name="multiChannelOrderNumber" minOccurs="0"/>
+      <xs:element type="xs:string" name="errorMessage" minOccurs="0"/>
+      <xs:element type="xs:string" name="shippingDetail1" minOccurs="0"/>
+      <xs:element type="xs:string" name="shippingDetail2" minOccurs="0"/>
+      <xs:element type="xs:string" name="shippingDetail3" minOccurs="0"/>
+      <xs:element type="xs:string" name="shippingDetail4" minOccurs="0"/>
+      <xs:element type="xs:string" name="shippingDetail5" minOccurs="0"/>
+      <xs:element type="xs:string" name="shippingDetail6" minOccurs="0"/>
+      <xs:element type="xs:long" name="multiChannelLineId" minOccurs="1"/>
+      <xs:element type="xs:long" name="multiChannelSaleType" minOccurs="1"/>
+      <xs:element type="xs:long" name="multiChannelTransType" minOccurs="1"/>
+      <xs:element type="xs:long" name="multiChannelTransSubType" minOccurs="1"/>
+      <xs:element type="xs:boolean" name="multiChannelFormValidation" minOccurs="1"/>
+      <xs:element type="xs:dateTime" name="businessDate" minOccurs="0"/>
+      <xs:element type="xs:long" name="errorStatus" minOccurs="1"/>
+    </xs:choice>
+  </xs:complexType>
+</xs:schema>
