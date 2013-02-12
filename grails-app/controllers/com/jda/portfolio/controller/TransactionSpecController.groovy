@@ -27,6 +27,7 @@ class TransactionSpecController {
 	def txncreate = {
 		def conf = Configuration.get(TXNCREATE_CONFIG_ID)
 		if (conf != null) {
+			println params
 			def transactionSpecInstance = new TransactionSpec(params)
 			postValidate(transactionSpecInstance)
 			params.XMLRequest  = autoTransService.getXML(transactionSpecInstance)

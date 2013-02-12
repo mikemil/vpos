@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <title><g:layoutTitle default="Grails" /></title>
          <link rel="stylesheet" href="${resource(dir:'css',file:'custom.css')}" />

@@ -5,12 +5,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
         <title>Create TransactionSpec</title> 
-        <script type="text/javascript" src="../js/autotrans.js"></script>
-        <script type="text/javascript" src="../js/showhide.js"></script>        
         <r:require module="bootstrap"/>
     </head>
-    <body onLoad="setDefaults()">
-        <div class="container">
+    <body>
+        <div class="container-fluid">
             <g:if test="${flash.message}">
                <div class="message">${flash.message}</div>
             </g:if>
@@ -24,10 +22,13 @@
                 <g:render template="discount" />
                 
                 <div>
-                    <input class="btn" type="button" value="Set Defaults" onclick="setDefaults();"/>
-                    <input class="btn" type="submit" value="Submit" id="submit"/>
+                    <button class="btn btn-primary" id="submit">Submit</button>
+                    <button class="btn btn-info">Set OD Defaults</button>
+                    <button class="btn btn-info">Set Defaults</button>
                 </div>
             </g:form>
         </div>
+		<script type="text/javascript" src="../js/autotrans.js"></script>
+        <script type="text/javascript" src="../js/showhide.js"></script>        
     </body>
 </html>
