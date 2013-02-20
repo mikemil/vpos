@@ -22,8 +22,7 @@
          }
     },
 
-    addItemRow:  function addItemRow (event) {
-      //console.log('addItemRow called...');
+    addRow:  function addRow ( idToClone, idToAppendTo, baseAttributeId, event) {
       event.preventDefault();
 
       // tag name regex text[0].text
@@ -33,9 +32,9 @@
       var regex = /^(.*)(\d)+$/i;
       var cloneIndex = $(".lineitem").length;
 
-      $('#lineItem0').clone(true, true)
-          .appendTo("#lineitems")
-          .attr("id", "lineitem" +  cloneIndex)
+      $(idToClone).clone(true, true)
+          .appendTo(idToAppendTo)
+          .attr("id", baseAttributeId +  cloneIndex)
           .find("*").each(function() {
               var id = this.id || "";
               var match = id.match(regex) || [];
@@ -52,91 +51,139 @@
           
     },
 
+    addItemRow:  function addItemRow (event) {
+      addRow("#lineItem0", "#lineitems", "lineitem", event );
+    },
+
     addTenderRow: function addTenderRow(event) {
-      //console.log('tender row called...');
-      event.preventDefault();
-
-      // tag name regex text[0].text
-      var regex1 = /^(.*\[)(\d)+(\].*)/i;
-      
-      // tag id regex name-0
-      var regex = /^(.*)(\d)+$/i;
-      var cloneIndex = $(".tender").length;
-      //console.log('cloneIndex='+cloneIndex);
-      $('#tender0').clone(true, true)
-          .appendTo("#tenders")
-          .attr("id", "tender" +  cloneIndex)
-          .find("*").each(function() {
-              var id = this.id || "";
-              var match = id.match(regex) || [];
-              if (match.length == 3) {
-                  this.id = match[1] + (cloneIndex);
-              }
-              var name = this.name || "";
-              var match1 = name.match(regex1) || [];
-              if (match1.length == 4) {
-                  this.name = match1[1] + cloneIndex + match1[3];
-              }
-          });
-          cloneIndex++
-
+      addRow("#tender0", "#tenders", "tender", event );
     },
 
     addCoupon: function addCoupon(event) {
-      //console.log('addCoupon called...');
-      event.preventDefault();
-
-      // tag name regex text[0].text
-      var regex1 = /^(.*\[)(\d)+(\].*)/i;
-      
-      // tag id regex name-0
-      var regex = /^(.*)(\d)+$/i;
-      var cloneIndex = $(".coupon").length;
-
-      $('#coupon0').clone(true, true)
-          .appendTo("#coupontable")
-          .attr("id", "coupon" +  cloneIndex)
-          .find("*").each(function() {
-              var id = this.id || "";
-              var match = id.match(regex) || [];
-              if (match.length == 3) {
-                  this.id = match[1] + (cloneIndex);
-              }
-              var name = this.name || "";
-              var match1 = name.match(regex1) || [];
-              if (match1.length == 4) {
-                  this.name = match1[1] + cloneIndex + match1[3];
-              }
-          });
-          cloneIndex++
-
+      addRow("#coupon0", "#coupontable", "coupon", event );
     },
 
     addDiscount: function addDiscount(event) {
-      //console.log('addDiscount called...');
-      event.preventDefault();
+      addRow("#discount0", "#discounttable", "discount", event );
+    }, 
 
-      // tag id regex name-0
-      var regex = /^(.*)(\d)+$/i;
-      var cloneIndex = $(".discount").length;
-      console.log('cloneIndex='+cloneIndex);
-      $('#discount0').clone(true, true)
-          .appendTo("#discounttable")
-          .attr("id", "discount" +  cloneIndex)
-          .find("*").each(function() {
-              var id = this.id || "";
-              var match = id.match(regex) || [];
-              if (match.length == 3) {
-                  this.id = match[1] + (cloneIndex);
-              }
-              var name = this.name || "";
-              var match1 = name.match(regex1) || [];
-              if (match1.length == 4) {
-                  this.name = match1[1] + cloneIndex + match1[3];
-              }
-          });
-          cloneIndex++
-    },
+    // addItemRow:  function addItemRow (event) {
+    //   //console.log('addItemRow called...');
+    //   event.preventDefault();
+
+    //   // tag name regex text[0].text
+    //   var regex1 = /^(.*\[)(\d)+(\].*)/i;
+      
+    //   // tag id regex name-0
+    //   var regex = /^(.*)(\d)+$/i;
+    //   var cloneIndex = $(".lineitem").length;
+
+    //   $('#lineItem0').clone(true, true)
+    //       .appendTo("#lineitems")
+    //       .attr("id", "lineitem" +  cloneIndex)
+    //       .find("*").each(function() {
+    //           var id = this.id || "";
+    //           var match = id.match(regex) || [];
+    //           if (match.length == 3) {
+    //               this.id = match[1] + (cloneIndex);
+    //           }
+    //           var name = this.name || "";
+    //           var match1 = name.match(regex1) || [];
+    //           if (match1.length == 4) {
+    //               this.name = match1[1] + cloneIndex + match1[3];
+    //           }
+    //       });
+    //       cloneIndex++;
+          
+    // },
+
+
+
+    // addTenderRow: function addTenderRow(event) {
+    //   //console.log('tender row called...');
+    //   event.preventDefault();
+
+    //   // tag name regex text[0].text
+    //   var regex1 = /^(.*\[)(\d)+(\].*)/i;
+      
+    //   // tag id regex name-0
+    //   var regex = /^(.*)(\d)+$/i;
+    //   var cloneIndex = $(".tender").length;
+    //   //console.log('cloneIndex='+cloneIndex);
+    //   $('#tender0').clone(true, true)
+    //       .appendTo("#tenders")
+    //       .attr("id", "tender" +  cloneIndex)
+    //       .find("*").each(function() {
+    //           var id = this.id || "";
+    //           var match = id.match(regex) || [];
+    //           if (match.length == 3) {
+    //               this.id = match[1] + (cloneIndex);
+    //           }
+    //           var name = this.name || "";
+    //           var match1 = name.match(regex1) || [];
+    //           if (match1.length == 4) {
+    //               this.name = match1[1] + cloneIndex + match1[3];
+    //           }
+    //       });
+    //       cloneIndex++
+
+    // },
+
+    // addCoupon: function addCoupon(event) {
+    //   //console.log('addCoupon called...');
+    //   event.preventDefault();
+
+    //   // tag name regex text[0].text
+    //   var regex1 = /^(.*\[)(\d)+(\].*)/i;
+      
+    //   // tag id regex name-0
+    //   var regex = /^(.*)(\d)+$/i;
+    //   var cloneIndex = $(".coupon").length;
+
+    //   $('#coupon0').clone(true, true)
+    //       .appendTo("#coupontable")
+    //       .attr("id", "coupon" +  cloneIndex)
+    //       .find("*").each(function() {
+    //           var id = this.id || "";
+    //           var match = id.match(regex) || [];
+    //           if (match.length == 3) {
+    //               this.id = match[1] + (cloneIndex);
+    //           }
+    //           var name = this.name || "";
+    //           var match1 = name.match(regex1) || [];
+    //           if (match1.length == 4) {
+    //               this.name = match1[1] + cloneIndex + match1[3];
+    //           }
+    //       });
+    //       cloneIndex++
+
+    // },
+
+    // addDiscount: function addDiscount(event) {
+    //   //console.log('addDiscount called...');
+    //   event.preventDefault();
+
+    //   // tag id regex name-0
+    //   var regex = /^(.*)(\d)+$/i;
+    //   var cloneIndex = $(".discount").length;
+    //   console.log('cloneIndex='+cloneIndex);
+    //   $('#discount0').clone(true, true)
+    //       .appendTo("#discounttable")
+    //       .attr("id", "discount" +  cloneIndex)
+    //       .find("*").each(function() {
+    //           var id = this.id || "";
+    //           var match = id.match(regex) || [];
+    //           if (match.length == 3) {
+    //               this.id = match[1] + (cloneIndex);
+    //           }
+    //           var name = this.name || "";
+    //           var match1 = name.match(regex1) || [];
+    //           if (match1.length == 4) {
+    //               this.name = match1[1] + cloneIndex + match1[3];
+    //           }
+    //       });
+    //       cloneIndex++
+    // },
 
     registerClickHandlers: function registerClickHandlers() {
       //console.log('registering click handlers...');

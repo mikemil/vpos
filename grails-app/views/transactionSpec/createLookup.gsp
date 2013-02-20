@@ -8,7 +8,7 @@
         <r:require module="bootstrap"/>
     </head>
     <body>
-        <div class="container">
+        <div class="container-fluid">
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
