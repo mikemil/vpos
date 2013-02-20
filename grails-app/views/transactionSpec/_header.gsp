@@ -1,6 +1,6 @@
 <fieldset>
 	<legend>Header</legend>
-		<div class="row-fluid-fluid">
+		<div class="row-fluid">
 			<div class="span4">
 				<div class="control-group">
 					<label class="control-label" for="transClassName">Trans Class Name:*</label>
@@ -27,7 +27,7 @@
 			</div>
 		</div>
 			
-		<div class="row-fluid-fluid">	
+		<div class="row-fluid">	
 		
 			<div class="span4">
 				<div class="control-group">
@@ -59,7 +59,7 @@
 			
 		</div>	
 		
-		<div class="row-fluid-fluid">
+		<div class="row-fluid">
 
 			<div class="span4">
 				<div class="control-group">

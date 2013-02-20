@@ -22,6 +22,7 @@
                 <g:render template="auth" />
                 <g:render template="header" />
                 <g:render template="lineitem" />
+				<!-- next two not really required -->
                 <!-- <g:render template="tender" /> -->
                 <!-- <g:render template="coupon" /> -->
             

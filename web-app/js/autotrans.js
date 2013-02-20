@@ -4,50 +4,26 @@
 
   var vpos = {
 
-    // selectors:  ['#userid', '#transClassName','#locationNumber', 'pswd', '#terminalName', '#associateSpecassociateNumber', 
-    //                   '#lineItemsSpecs-sku-0', 'lineItemSpecs-quantity-0', '#tenderSpecs-tenderCode-0', '#tenderSpecs-cardToken-0',
-    //                   '#tenderSpecs-cardType-0', '#tenderSpecs-cardSubType-0'];
-    // defaultVals: ['102', 'com.jda.portfolio.pos.base.transaction.RetailTransaction', '8001', '102', '20', '102', '210',
-    //                    '1', 'VI', 'abababababab', '100', '1001'];                  
+    // selectors for setting default values
+    selectors:  ['#userid', '#transClassName','#locationNumber', '#pswd', '#terminalName', '#associateSpecassociateNumber', 
+                  '#lineItemSpecs-sku-0', '#lineItemSpecs-quantity-0', '#tenderSpecs-tenderCode-0', '#tenderSpecs-cardToken-0',
+                  '#tenderSpecs-cardType-0', '#tenderSpecs-cardSubType-0'], 
+
+    // default values for the required fields
+    defaultVals: ['102', 'com.jda.portfolio.pos.base.transaction.RetailTransaction', '8001', '102', '20', '102', '210',
+                    '1', 'VI', 'abababababab', '100', '1001'],                  
 
     setDefaults: function setDefaults()  {
-        console.log('setting the default form values...');
-        // for (var i = 0 i < selectors.length; i++) {
-        //     console.log('setting '+selectors[i]+ ' to '+defaultVals[i]);
-        //     $(selectors[i]).val(defaultVals);
-        // };
-        $('#userid').val('102');
-        $('#transClassName').val('com.jda.portfolio.pos.base.transaction.RetailTransaction');
-        $('#locationNumber').val('8001');
-        $('#pswd').val('102');
-        $('#terminalName').val('20');
-        $('#associateSpecassociateNumber').val('102');
-        $('#lineItemSpecs-sku-0').val('210');
-        $('#lineItemSpecs-quantity-0').val('1');
-        $('#tenderSpecs-tenderCode-0').val('VI');
-        $('#tenderSpecs-cardToken-0').val('ababababababab');
-        $('#tenderSpecs-cardType-0').val('100');
-        $('#tenderSpecs-cardSubType-0').val('1001');
-    },
-
-    setODDefaults: function setODDefaults()   {
-        // office depot settings
-        $('#userid').val('102');
-        $('#pswd').val('Password1');
-        $('#transClassName').val('com.jda.portfolio.pos.base.transaction.RetailTransaction');
-        $('#locationNumber').val('409');
-        $('#terminalName').val('1');
-        $('#associateSpecassociateNumber').val('102');
-        $('#lineItemSpecs-sku-0').val('163061');
-        $('#lineItemSpecs-quantity-0').val('2');
-        $('#tenderSpecs-tenderCode-0').val('DC');
-        $('#tenderSpecs-cardToken-0').val('ababababababab');
-        $('#tenderSpecs-cardType-0').val('100');
-        $('#tenderSpecs-cardSubType-0').val('1001');
+        event.preventDefault();
+        //console.log('setting the default form values...');
+         for (var i=0; i < this.selectors.length; i++) {
+             console.log('setting '+this.selectors[i]+ ' to '+this.defaultVals[i]);
+             $(this.selectors[i]).val(this.defaultVals[i]);
+         }
     },
 
     addItemRow:  function addItemRow (event) {
-      console.log('addItemRow called...');
+      //console.log('addItemRow called...');
       event.preventDefault();
 
       // tag name regex text[0].text
@@ -77,7 +53,7 @@
     },
 
     addTenderRow: function addTenderRow(event) {
-      console.log('tender row called...');
+      //console.log('tender row called...');
       event.preventDefault();
 
       // tag name regex text[0].text
@@ -86,7 +62,7 @@
       // tag id regex name-0
       var regex = /^(.*)(\d)+$/i;
       var cloneIndex = $(".tender").length;
-      console.log('cloneIndex='+cloneIndex);
+      //console.log('cloneIndex='+cloneIndex);
       $('#tender0').clone(true, true)
           .appendTo("#tenders")
           .attr("id", "tender" +  cloneIndex)
@@ -107,7 +83,7 @@
     },
 
     addCoupon: function addCoupon(event) {
-      console.log('addCoupon called...');
+      //console.log('addCoupon called...');
       event.preventDefault();
 
       // tag name regex text[0].text
@@ -137,7 +113,7 @@
     },
 
     addDiscount: function addDiscount(event) {
-      console.log('addDiscount called...');
+      //console.log('addDiscount called...');
       event.preventDefault();
 
       // tag id regex name-0
@@ -163,7 +139,7 @@
     },
 
     registerClickHandlers: function registerClickHandlers() {
-      console.log('registering click handlers...');
+      //console.log('registering click handlers...');
       $("button.cloneLineItem").click(this.addItemRow);
       $("button.#btnTenderClone").click(this.addTenderRow);
       $("#couponBtn").click(this.addCoupon);
@@ -171,7 +147,7 @@
     },
 
     init: function initialize() {
-      console.log(this);
+      //console.log(this);
       this.setDefaults();
       this.registerClickHandlers();
     }

@@ -23,7 +23,6 @@
                 
                 <div>
                     <button class="btn btn-primary" id="submit">Submit</button>
-                    <button class="btn btn-info">Set OD Defaults</button>
                     <button class="btn btn-info">Set Defaults</button>
                 </div>
             </g:form>
