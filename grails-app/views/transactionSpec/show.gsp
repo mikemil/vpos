@@ -10,7 +10,7 @@
     <body>
         <div class="container">
             <h1>Request</h1>
-            <div id="request" class="hero-unit">
+            <div id="request" class="hero-unit" style="background-color:#B8B8B8;">
                 <table>
                    <tbody>
                        <tr>
@@ -21,7 +21,7 @@
             </div>
 
             <h1>Response</h1>
-            <div id="response" class="hero-unit">
+            <div id="response" class="hero-unit" style="background-color:#B8B8B8;">
               <table>
                    <tbody>
                        <tr>

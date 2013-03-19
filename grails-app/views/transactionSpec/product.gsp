@@ -4,7 +4,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
-        <title>Create TransactionSpec</title>         
+        <title>Product Lookup</title>         
         <r:require module="bootstrap"/>
     </head>
     <body>
@@ -18,11 +18,14 @@
             </div>
             </g:hasErrors>
             <br/>
-            <g:form action="pricelookup" method="post">
+            <g:form action="productLookup" method="post">
                 <g:render template="auth" />
                 <g:render template="header" />
                 <g:render template="lineitem" />
-				<div>
+				<!-- next two not really required -->
+                <!-- <g:render template="tender" /> -->
+                <!-- <g:render template="coupon" /> -->
+                <div>
                     <button class="btn btn-primary" type="submit" id="submit">Submit</button>
                     <button class="btn btn-info" onclick="setDefaults();" >Set Defaults</button>
                 </div>

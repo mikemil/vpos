@@ -17,7 +17,7 @@
         event.preventDefault();
         //console.log('setting the default form values...');
          for (var i=0; i < this.selectors.length; i++) {
-             console.log('setting '+this.selectors[i]+ ' to '+this.defaultVals[i]);
+             //console.log('setting '+this.selectors[i]+ ' to '+this.defaultVals[i]);
              $(this.selectors[i]).val(this.defaultVals[i]);
          }
     },
@@ -67,16 +67,21 @@
       addRow("#discount0", "#discounttable", "discount", event );
     }, 
 
+    fade: function fade() {
+      $('.container-fluid').fadeToggle('slow');
+      $('.hdrmsg').show();
+    }, 
+
     registerClickHandlers: function registerClickHandlers() {
       //console.log('registering click handlers...');
       $("button.cloneLineItem").click(this.addItemRow);
       $("button.#btnTenderClone").click(this.addTenderRow);
       $("#couponBtn").click(this.addCoupon);
       $("#discountBtn").click(this.addDiscount);
+      $('#submit').click(this.fade);
     },
 
     init: function initialize() {
-      //console.log(this);
       this.setDefaults();
       this.registerClickHandlers();
     }

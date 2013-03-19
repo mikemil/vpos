@@ -4,6 +4,7 @@ class Configuration {
 
     static TYPE_LOOKUP = new Integer(1)
     static TYPE_TXN_CREATE = new Integer(2)
+    static TYPE_TXN_PRODUCT = new Integer(3)
 
     static constraints = {
         protocol(blank:false)
@@ -20,11 +21,8 @@ class Configuration {
     String url
     Integer type
 
-    
     String toString() {
         protocol + server + ":" + port + context + url
     }
-
-
 
 }

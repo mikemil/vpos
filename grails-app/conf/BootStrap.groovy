@@ -8,6 +8,7 @@ class BootStrap {
         // configuration entries - 1st two not currently used!
         new Configuration(protocol:"http:", server:"localhost", port:"7001", context:"/pposautoservices", url:"/transaction/create", type:1).save()
         new Configuration(protocol:"http:", server:"localhost", port:"7001", context:"/pposautoservices", url:"/transaction/price", type:2).save()
+        new Configuration(protocol:"http:", server:"localhost", port:"7001", context:"/pposautoservices", url:"/transaction/product", type:3).save()
         
         // reason code used to provide drop-down for reason code field
         new OverrideReasonCode(reasonCode:1108, description:'Price Guarantee').save()
@@ -25,6 +26,7 @@ class BootStrap {
         new Version(versionId:'0.7', description:'Remove CustomerSpec if customer number empty, add warning when using IE').save()
         new Version(versionId:'0.8', description:'Added dropdown from OverrideReasonCode objects, use FieldSet tags').save()
         new Version(versionId:'0.9', description:'Updated for POS 7.8 release, using card tokens instead of card numbers and use Twitter Bootstrap for UI').save()
+        new Version(versionId:'0.9.5', description:'Adding Product Lookup api').save()
      }
     
      def destroy = {

@@ -6,3 +6,10 @@ h1 {
 	color: green;
 }
 
+legend {
+	margin-bottom: 5px;
+}
+
+.hdrmsg {
+	display: none;
+}

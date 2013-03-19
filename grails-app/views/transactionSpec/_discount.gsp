@@ -4,14 +4,14 @@
             <legend>Discounts</legend>
             <div id="discounttable">
                 <div class="row-fluid">
-					<div class="span4">
+					<div class="span3">
 						<input id="discountBtn" type="button" class="btn btn-info" value="Add Discount"/>
 					</div>
                 </div>
 				<div id="discount0" class="discount">		
 					<div class="row-fluid">
 						
-						<div class="span4">
+						<div class="span3">
 							<div class="control-group">
                            		<label class="control-label" for="discountCode">Discount Code:</label>
 								<div class="controls">
@@ -20,7 +20,7 @@
 							</div>
 						</div>	
 							
-						<div class="span4">
+						<div class="span3">
 							<div class="control-group">							
             	                <label class="control-label" for="amount">Amount:</label>
 								<div class="controls">							
@@ -29,7 +29,7 @@
 							</div>	
 						</div>
 
-						<div class="span4">
+						<div class="span3">
 							<div class="control-group">														
                             	<label class="control-label" for="precision">Precision:</label>
 								<div class="control-group">																

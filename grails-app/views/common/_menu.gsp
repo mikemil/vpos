@@ -6,10 +6,14 @@
           <li class=""><a href="${createLink (controller:'configuration')}">Configuration</a></li>
           <li class=""><a href="${createLink (controller:'transactionSpec', action:'createLookup')}">Price Lookup</a></li>
           <li class=""><a href="${createLink (controller:'transactionSpec', action:'create')}">Txn Create</a></li>
+          <li class=""><a href="${createLink (controller:'transactionSpec', action:'product')}">Product Lookup</a></li>
        </ul>
     </div>
   </div>
-</div>   
+</div>  
+<div class="hdrmsg">
+  <h1>Request submitted...</h1>
+</div> 
    
    
    

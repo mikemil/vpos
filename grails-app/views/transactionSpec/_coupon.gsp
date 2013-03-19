@@ -7,7 +7,7 @@
                         <div id="coupontable" class="table table-condensed">
                             
                             <div classl="row-fluid">
-                                <div classl="span4">
+                                <div classl="span3">
                                     <div class="control-group">
                                         <div class="controls">
                                             <input id="couponBtn" type="button" class="btn btn-info" value="Add Coupon"/></tr>
@@ -17,7 +17,7 @@
                             </div>
 
                             <div id="coupon0" class="row-fluid coupon">
-                                <div classl="span4">
+                                <div classl="span3">
                                     <div class="control-group">
                                         <label  class="control-label" for="couponNumber">Coupon Number:</label>
                                         <div class="controls">

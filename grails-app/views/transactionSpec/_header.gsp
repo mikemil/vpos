@@ -1,7 +1,7 @@
 <fieldset>
 	<legend>Header</legend>
 		<div class="row-fluid">
-			<div class="span4">
+			<div class="span3">
 				<div class="control-group">
 					<label class="control-label" for="transClassName">Trans Class Name:*</label>
 					<div class="controls">
@@ -10,14 +10,14 @@
 				</div>
 			</div>
 				
-			<div class="span4">
+			<div class="span3">
 				<div class="control-group">
 					<label class="control-label" for="locationNumber">Location Number:*</label>
 					<input type="text" id="locationNumber"	name="locationNumber" value="${transactionSpecInstance?.locationNumber}" required />
 				</div>
 			</div>
 			
-			<div class="span4">
+			<div class="span3">
 				<div class="control-group">
 					<label class="control-label" for="terminalName">Terminal Name:*</label>
 					<div class="controls">
@@ -29,7 +29,7 @@
 			
 		<div class="row-fluid">	
 		
-			<div class="span4">
+			<div class="span3">
 				<div class="control-group">
 					<label class="control-label" for="training">Training:</label>
 					<div class="control">
@@ -38,7 +38,7 @@
 				</div>
 			</div>
 			
-			<div class="span4">
+			<div class="span3">
 				<div class="control-group">
 					<label class="control-label" for="currencyCode">Currency Code:</label>
 					<div class="control">
@@ -47,7 +47,7 @@
 				</div>		
 			</div>			
 						
-			<div class="span4">
+			<div class="span3">
 				<div class="control-group">
 					<label class="control-label" for="associateNumber">Associate Number:*</label>
 					<div class="control">
@@ -61,7 +61,7 @@
 		
 		<div class="row-fluid">
 
-			<div class="span4">
+			<div class="span3">
 				<div class="control-group">
 					<label class="control-label" for="customerSpec">Customer Number:</label>
 					<div class="controls">
@@ -71,7 +71,7 @@
 				</div>	
 			</div>		
 					
-			<div class="span4">
+			<div class="span3">
 				<div class="control-group">
 					<label class="control-label" for="customerSpec">Tax Exempt Number:</label>
 					<div class="control">
@@ -82,7 +82,7 @@
 				</div>
 			</div>
 			
-			<div class="span4">
+			<div class="span3">
 				<div class="control-group">
 					<label class="control-label" for="suspend">Suspend:</label>
 					<g:checkBox name="suspend"

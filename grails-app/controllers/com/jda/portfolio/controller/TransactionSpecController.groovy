@@ -3,10 +3,13 @@ package com.jda.portfolio.controller
 import com.jda.portfolio.domain.Configuration
 import com.jda.portfolio.domain.OverrideReasonCode
 import com.jda.portfolio.domain.TransactionSpec
+import com.jda.portfolio.domain.ProductDetail
+import com.jda.portfolio.domain.PriceEvent
 
 
 class TransactionSpecController {
 	
+	def PRODUCTLOOKUP_CONFIG_ID = 3
 	def PRICELOOKUP_CONFIG_ID = 2
 	def TXNCREATE_CONFIG_ID   = 1
 	
@@ -20,6 +23,10 @@ class TransactionSpecController {
 		['transactionSpecInstance': createSpec(), reasonCodes:OverrideReasonCode.list()]
 	}
 	
+	def product = {
+		['transactionSpecInstance': createSpec(), reasonCodes:OverrideReasonCode.list()]
+	}
+
 	def createSpec() {
 		return ['transactionSpecInstance': new TransactionSpec(params)]   
 	}
@@ -27,7 +34,6 @@ class TransactionSpecController {
 	def txncreate = {
 		def conf = Configuration.get(TXNCREATE_CONFIG_ID)
 		if (conf != null) {
-			println params
 			def transactionSpecInstance = new TransactionSpec(params)
 			postValidate(transactionSpecInstance)
 			params.XMLRequest  = autoTransService.getXML(transactionSpecInstance)
@@ -47,6 +53,25 @@ class TransactionSpecController {
 		render (view:"show", model:params)
 	}
 	
+	def productLookup = {
+		def conf = Configuration.get(PRODUCTLOOKUP_CONFIG_ID)
+		if (conf != null) {
+			def transactionSpecInstance = new TransactionSpec(params)
+			postValidate(transactionSpecInstance)
+			params.XMLRequest  = autoTransService.getXML(transactionSpecInstance)
+			params.XMLResponse = autoTransService.autoService(transactionSpecInstance, conf, params.userid, params.pswd)
+			//println 'class='+params.XMLResponse.class.name
+			//println 'xml response: '+params.XMLResponse
+			def transSpecGPath = new XmlSlurper().parseText(params.XMLResponse)
+			//println transSpecGPath
+			params.productDetail = buildProductDetail(transSpecGPath)
+		} // else {
+			// set a flash message about missing configuration document - shouldn't happen!
+			//}
+
+		render (view:"showProduct", model:params)
+	}
+
 	def postValidate(transSpec)  {
 		def removeList = []
 		for ( coupon in transSpec.couponSpecs) {
@@ -97,6 +122,18 @@ class TransactionSpecController {
 		
 	}
 	
+	def ProductDetail buildProductDetail(transSpecGPathResult) {
+		def lineSpec = transSpecGPathResult.TransBeanSpec.TransLineSpecs.TransLineSpec[0]
+		def prodDtl = new ProductDetail()
+		prodDtl.sku = lineSpec.sku.text().trim();
+		prodDtl.description = lineSpec.description.text().trim()
+		prodDtl.price = Integer.parseInt(lineSpec.total.text().trim())
+		//todo handle price events here
+		prodDtl.createDummyPriceEvents()
+
+		return prodDtl
+	}
+
 	//************** Ajax related closures ************************
 	
 	def txncreateAjax = {
