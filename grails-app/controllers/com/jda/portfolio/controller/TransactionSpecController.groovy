@@ -2,9 +2,17 @@ package com.jda.portfolio.controller
 
 import com.jda.portfolio.domain.Configuration
 import com.jda.portfolio.domain.OverrideReasonCode
-import com.jda.portfolio.domain.TransactionSpec
 import com.jda.portfolio.domain.ProductDetail
-import com.jda.portfolio.domain.PriceEvent
+import com.jda.portfolio.domain.PriceDeal
+import com.jda.portfolio.domain.TransactionSpec
+
+
+// figure out why I need to set the qty whenever I create a second, third, etc lineitem, tender, etc
+
+// todo: handle multiple TransLineSpecs coming back - need to create a list of 
+//       product details and repeat the results on the page
+
+// try color coding the line for qualifier vs getter
 
 
 class TransactionSpecController {
@@ -34,10 +42,15 @@ class TransactionSpecController {
 	def txncreate = {
 		def conf = Configuration.get(TXNCREATE_CONFIG_ID)
 		if (conf != null) {
-			def transactionSpecInstance = new TransactionSpec(params)
-			postValidate(transactionSpecInstance)
-			params.XMLRequest  = autoTransService.getXML(transactionSpecInstance)
-			params.XMLResponse = autoTransService.autoService(transactionSpecInstance, conf, params.userid, params.pswd)
+			processRequest(conf)
+			//def transactionSpecInstance = new TransactionSpec(params)
+			//postValidate(transactionSpecInstance)
+			//def startMillis = System.currentTimeMillis()
+			//params.XMLRequest  = autoTransService.getXML(transactionSpecInstance)
+			//params.generateXMLMillis = System.currentTimeMillis() - startMillis
+			//startMillis = System.currentTimeMillis()
+			//params.XMLResponse = autoTransService.autoService(transactionSpecInstance, conf, params.userid, params.pswd)
+			//params.serviceMillis = System.currentTimeMillis() - startMillis
 		}
 		render (view:"show", model:params)
 	}
@@ -45,10 +58,15 @@ class TransactionSpecController {
 	def pricelookup = {
 		def conf = Configuration.get(PRICELOOKUP_CONFIG_ID)
 		if (conf != null) {
-			def transactionSpecInstance = new TransactionSpec(params)
-			postValidate(transactionSpecInstance)
-			params.XMLRequest  = autoTransService.getXML(transactionSpecInstance)
-			params.XMLResponse = autoTransService.autoService(transactionSpecInstance, conf, params.userid, params.pswd)
+			processRequest(conf)
+			//def transactionSpecInstance = new TransactionSpec(params)
+			//postValidate(transactionSpecInstance)
+			//def startMillis = System.currentTimeMillis()
+			//params.XMLRequest  = autoTransService.getXML(transactionSpecInstance)
+			//params.generateXMLMillis = System.currentTimeMillis() - startMillis
+			//startMillis = System.currentTimeMillis()
+			//params.XMLResponse = autoTransService.autoService(transactionSpecInstance, conf, params.userid, params.pswd)
+			//params.serviceMillis = System.currentTimeMillis() - startMillis
 		}
 		render (view:"show", model:params)
 	}
@@ -56,20 +74,39 @@ class TransactionSpecController {
 	def productLookup = {
 		def conf = Configuration.get(PRODUCTLOOKUP_CONFIG_ID)
 		if (conf != null) {
-			def transactionSpecInstance = new TransactionSpec(params)
-			postValidate(transactionSpecInstance)
-			params.XMLRequest  = autoTransService.getXML(transactionSpecInstance)
-			params.XMLResponse = autoTransService.autoService(transactionSpecInstance, conf, params.userid, params.pswd)
-			//println 'class='+params.XMLResponse.class.name
-			//println 'xml response: '+params.XMLResponse
-			def transSpecGPath = new XmlSlurper().parseText(params.XMLResponse)
-			//println transSpecGPath
-			params.productDetail = buildProductDetail(transSpecGPath)
-		} // else {
-			// set a flash message about missing configuration document - shouldn't happen!
-			//}
-
+			processRequest(conf)
+			//def transactionSpecInstance = new TransactionSpec(params)
+			//postValidate(transactionSpecInstance)
+			//def startMillis = System.currentTimeMillis()
+			//params.XMLRequest  = autoTransService.getXML(transactionSpecInstance)
+			//params.generateXMLMillis = System.currentTimeMillis() - startMillis
+			//startMillis = System.currentTimeMillis()
+			//params.XMLResponse = autoTransService.autoService(transactionSpecInstance, conf, params.userid, params.pswd)
+			//params.serviceMillis = System.currentTimeMillis() - startMillis
+			//def startMillis = System.currentTimeMillis()
+			//todo may want to put a try/catch around this - or above - to catch the case where store server is not up!!!
+			//def transSpecGPath = new XmlSlurper().parseText(params.XMLResponse)
+			//params.slurpMillis = System.currentTimeMillis() - startMillis
+			//params.productDetail = buildProductDetail(transSpecGPath)
+		} 
 		render (view:"showProduct", model:params)
+	}
+
+	def processRequest(conf) {
+		def transactionSpecInstance = new TransactionSpec(params)
+		postValidate(transactionSpecInstance)
+		def startMillis = System.currentTimeMillis()
+		params.XMLRequest  = autoTransService.getXML(transactionSpecInstance)
+		params.generateXMLMillis = System.currentTimeMillis() - startMillis
+		startMillis = System.currentTimeMillis()
+		println 'calling vpos...'
+		params.XMLResponse = autoTransService.autoService(transactionSpecInstance, conf, params.userid, params.pswd)
+		params.serviceMillis = System.currentTimeMillis() - startMillis
+		println 'returned from vpos.'
+		startMillis = System.currentTimeMillis()
+		def transSpecGPath = new XmlSlurper().parseText(params.XMLResponse)
+		params.slurpMillis = System.currentTimeMillis() - startMillis
+		params.productDetail = buildProductDetail(transSpecGPath, conf.type)
 	}
 
 	def postValidate(transSpec)  {
@@ -122,14 +159,45 @@ class TransactionSpecController {
 		
 	}
 	
-	def ProductDetail buildProductDetail(transSpecGPathResult) {
+	def ProductDetail buildProductDetail(transSpecGPathResult, configType) {
 		def lineSpec = transSpecGPathResult.TransBeanSpec.TransLineSpecs.TransLineSpec[0]
 		def prodDtl = new ProductDetail()
 		prodDtl.sku = lineSpec.sku.text().trim();
 		prodDtl.description = lineSpec.description.text().trim()
 		prodDtl.price = Integer.parseInt(lineSpec.total.text().trim())
-		//todo handle price events here
-		prodDtl.createDummyPriceEvents()
+
+		// this part only done for product lookup!
+		if (configType == Configuration.TYPE_PRODUCT_LOOKUP) {
+			if (lineSpec.PotentialDealSpecs) {
+				def deals = []
+				lineSpec.PotentialDealSpecs.children().each { dealSpec ->
+					// filter to include only these type deals (for now)
+					if (dealSpec.dealType.text().trim() == 'BREAKPOINT' ||
+						dealSpec.dealType.text().trim() == 'LIMIT' ||
+						dealSpec.dealType.text().trim() == 'BOGO' ) {
+
+						def deal = new PriceDeal()
+						deal.eventName = dealSpec.eventName.text().trim()
+						deal.eventNumber = dealSpec.eventNumber.text().trim()
+						deal.effectiveDate = dealSpec.effectiveDate.text().trim()
+						deal.dealType = dealSpec.dealType.text().trim()
+						deal.buyDescription = dealSpec.dealInfo.buyDesc.text().trim()
+						deal.buyOrder = dealSpec.dealInfo.buyOrder.text().trim()
+						deal.buyQty = dealSpec.dealInfo.buyQuantity.text().trim()
+						deal.getDescription = dealSpec.dealInfo.getDesc.text().trim()
+						deal.getOrder = dealSpec.dealInfo.getOrder.text().trim()
+						deal.getQty = dealSpec.dealInfo.getQuantity.text().trim()
+						deal.priceType = dealSpec.dealInfo.priceType.text().trim()
+						deal.priceValue = dealSpec.dealInfo.priceValue.text().trim()
+						deal.limitQty = dealSpec.dealInfo.limitQuantity.text().trim()
+						deal.qualifier = dealSpec.dealInfo.qualifier.text().trim()
+						deal.getter = dealSpec.dealInfo.getter.text().trim()
+						deals << deal
+					}
+				}
+				prodDtl.priceDeals = deals
+			} else println 'No PotentialDealSpecs found.'
+		}
 
 		return prodDtl
 	}

@@ -8,8 +8,9 @@
         <title>Edit Configuration</title>
     </head>
     <body>
-        <div class="body">
+        <div class="container-fluid">
             <h1>Edit Configuration</h1>
+            <br/>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
@@ -21,16 +22,16 @@
             <g:form method="post" >
                 <input type="hidden" name="id" value="${configurationInstance?.id}" />
                 <input type="hidden" name="version" value="${configurationInstance?.version}" />
-                <div class="dialog">
-                    <table>
+                %{-- <div class="dialog"> --}%
+                <div>
+                    <table class="table table-striped">
                         <tbody>
-                        
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="protocol">Protocol:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:configurationInstance,field:'protocol','errors')}">
-                                    <input type="text" id="protocol" name="protocol" value="${fieldValue(bean:configurationInstance,field:'protocol')}"/>
+                                    <input type="text" readonly id="protocol" name="protocol" value="${fieldValue(bean:configurationInstance,field:'protocol')}"/>
                                 </td>
                             </tr> 
                         
@@ -57,7 +58,7 @@
                                     <label for="context">Context:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:configurationInstance,field:'context','errors')}">
-                                    <input type="text" id="context" name="context" value="${fieldValue(bean:configurationInstance,field:'context')}"/>
+                                    <input type="text" readonly id="context" name="context" value="${fieldValue(bean:configurationInstance,field:'context')}"/>
                                 </td>
                             </tr> 
                         
@@ -66,24 +67,24 @@
                                     <label for="url">Url:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:configurationInstance,field:'url','errors')}">
-                                    <input type="text" id="url" name="url" value="${fieldValue(bean:configurationInstance,field:'url')}"/>
+                                    <input type="text" readonly id="url" name="url" value="${fieldValue(bean:configurationInstance,field:'url')}"/>
                                 </td>
                             </tr> 
-                        
-                            <tr class="prop">
+
+                            %{-- <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="type">Type:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:configurationInstance,field:'type','errors')}">
-                                    <input type="text" id="type" name="type" value="${fieldValue(bean:configurationInstance,field:'type')}" />
+                                    <input type="text" readonly id="type" name="type" value="${fieldValue(bean:configurationInstance,field:'type')}" />
                                 </td>
-                            </tr> 
+                            </tr>  --}%
                         
                         </tbody>
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><g:actionSubmit class="save" value="Update" /></span>
+                    <g:actionSubmit class="save btn btn-primary" value="Update" />
                 </div>
             </g:form>
         </div>

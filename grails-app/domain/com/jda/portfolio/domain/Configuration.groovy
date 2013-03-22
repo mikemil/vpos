@@ -4,7 +4,7 @@ class Configuration {
 
     static TYPE_LOOKUP = new Integer(1)
     static TYPE_TXN_CREATE = new Integer(2)
-    static TYPE_TXN_PRODUCT = new Integer(3)
+    static TYPE_PRODUCT_LOOKUP = new Integer(3)
 
     static constraints = {
         protocol(blank:false)

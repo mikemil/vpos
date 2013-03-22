@@ -8,13 +8,14 @@
         <title>Show Configuration</title>
     </head>
     <body>
-        <div class="body">
+        <div class="container-fluid">
             <h1>Show Configuration</h1>
+            <br/>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
-            <div class="dialog">
-                <table>
+            <div>
+                <table class="table table-striped">
                     <tbody>
                         <tr class="prop">
                             <td valign="top" class="name">Id:</td>
@@ -46,10 +47,12 @@
                             <td valign="top" class="value">${fieldValue(bean:configurationInstance, field:'url')}</td>
                         </tr>
                     
-                        <tr class="prop">
+                        <input type="hidden" name="type" value="${configurationInstance?.type}" />
+
+                       %{--  <tr class="prop">
                             <td valign="top" class="name">Type:</td>
                             <td valign="top" class="value">${fieldValue(bean:configurationInstance, field:'type')}</td>
-                        </tr>
+                        </tr> --}%
                     
                     </tbody>
                 </table>
@@ -57,7 +60,9 @@
             <div class="buttons">
                 <g:form>
                     <input type="hidden" name="id" value="${configurationInstance?.id}" />
-                    <span class="button"><g:actionSubmit class="edit" value="Edit" /></span>
+                    <g:actionSubmit class="list btn btn-primary" value="List" />
+                    %{-- <input type="submit" class="list btn btn-primary" value="List"><i class="icon-list"></i></input> --}%
+                    %{-- <a class="list btn btn-primary" href="#"><i class="icon-list">&nbsp;</i>List</a> --}%
                 </g:form>
             </div>
         </div>

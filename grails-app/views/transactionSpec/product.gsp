@@ -27,7 +27,6 @@
                 <!-- <g:render template="coupon" /> -->
                 <div>
                     <button class="btn btn-primary" type="submit" id="submit">Submit</button>
-                    <button class="btn btn-info" onclick="setDefaults();" >Set Defaults</button>
                 </div>
             </g:form>
         </div>

@@ -52,38 +52,46 @@
     },
 
     addItemRow:  function addItemRow (event) {
-      addRow("#lineItem0", "#lineitems", "lineitem", event );
+      vpos.addRow("#lineItem0", "#lineitems", "lineitem", event );
     },
 
     addTenderRow: function addTenderRow(event) {
-      addRow("#tender0", "#tenders", "tender", event );
+      vpos.addRow("#tender0", "#tenders", "tender", event );
     },
 
     addCoupon: function addCoupon(event) {
-      addRow("#coupon0", "#coupontable", "coupon", event );
+      vpos.addRow("#coupon0", "#coupontable", "coupon", event );
     },
 
     addDiscount: function addDiscount(event) {
-      addRow("#discount0", "#discounttable", "discount", event );
+      vpos.addRow("#discount0", "#discounttable", "discount", event );
     }, 
 
     fade: function fade() {
-      $('.container-fluid').fadeToggle('slow');
+      console.log('showing post msg, spinner and fading...');
       $('.hdrmsg').show();
+      //$('.container-fluid').fadeToggle('slow');
+      $('.container-fluid').fadeToggle(700);
     }, 
+
+    initFocus: function initFocus() {
+      $('#lineItemSpecs-sku-0').focus();
+      $("#lineItemSpecs-sku-0:text:visible:first").focus();
+    },
 
     registerClickHandlers: function registerClickHandlers() {
       //console.log('registering click handlers...');
+      $('#submit').click(this.fade);
       $("button.cloneLineItem").click(this.addItemRow);
-      $("button.#btnTenderClone").click(this.addTenderRow);
+      $("#btnTenderClone").click(this.addTenderRow);
       $("#couponBtn").click(this.addCoupon);
       $("#discountBtn").click(this.addDiscount);
-      $('#submit').click(this.fade);
     },
 
     init: function initialize() {
       this.setDefaults();
       this.registerClickHandlers();
+      this.initFocus();
     }
 
   }

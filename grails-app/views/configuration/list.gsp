@@ -8,12 +8,13 @@
         <title>Configuration List</title>
     </head>
     <body>
-        <div class="container">
+        <div class="container-fluid">
             <h1>Configuration List</h1>
+            <br/>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
-            <table class="table table-striped">
+            <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
                	        <g:sortableColumn property="id" title="Id" />
@@ -27,7 +28,7 @@
                 <tbody>
                 <g:each in="${configurationInstanceList}" status="i" var="configurationInstance">
                     <tr>
-                        <td><g:link action="show" id="${configurationInstance.id}">${fieldValue(bean:configurationInstance, field:'id')}</g:link></td>
+                        <td><g:link action="edit" id="${configurationInstance.id}">${fieldValue(bean:configurationInstance, field:'id')}</g:link></td>
                         <td>${fieldValue(bean:configurationInstance, field:'protocol')}</td>
                         <td>${fieldValue(bean:configurationInstance, field:'server')}</td>
                         <td>${fieldValue(bean:configurationInstance, field:'port')}</td>

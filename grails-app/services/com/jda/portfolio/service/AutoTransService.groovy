@@ -90,34 +90,34 @@ class AutoTransService {
 	}
 	
 	// call the REST service using the XML
-	def autoServiceShort(String xml, Configuration conf, String userid, String pswd) {
+	// def autoServiceShort(String xml, Configuration conf, String userid, String pswd) {
 		
-		def ppos = new HTTPBuilder( conf.protocol+"//"+conf.server+":"+conf.port, TEXT )
+	// 	def ppos = new HTTPBuilder( conf.protocol+"//"+conf.server+":"+conf.port, TEXT )
 		
-		try {
-			ppos.request( PUT ) {
-				uri.path = conf.context + conf.url
-				headers = [Accept:'application/xml', 'ppos-user':userid, 'ppos-pswd':pswd]
-				send( groovyx.net.http.ContentType.TEXT, xml ) 
+	// 	try {
+	// 		ppos.request( PUT ) {
+	// 			uri.path = conf.context + conf.url
+	// 			headers = [Accept:'application/xml', 'ppos-user':userid, 'ppos-pswd':pswd]
+	// 			send( groovyx.net.http.ContentType.TEXT, xml ) 
 				
-				// success handler
-				response.success = { resp, reader ->
-					//pretty print format the response
-					def stringWriter = new StringWriter()
-					def node = new XmlParser().parseText(reader.text);
-					new  XmlNodePrinter(new PrintWriter(stringWriter)).print(node)
-					return stringWriter.toString()
-				}
-				// failure handler
-				response.failure = { resp ->
-					return 'Response status='+resp.status
-				}
-			}
-		} catch(Exception e) {
-			log.error("Caught exception:", e)
-			return e.toString()
-		}
-	}
+	// 			// success handler
+	// 			response.success = { resp, reader ->
+	// 				//pretty print format the response
+	// 				def stringWriter = new StringWriter()
+	// 				def node = new XmlParser().parseText(reader.text);
+	// 				new  XmlNodePrinter(new PrintWriter(stringWriter)).print(node)
+	// 				return stringWriter.toString()
+	// 			}
+	// 			// failure handler
+	// 			response.failure = { resp ->
+	// 				return 'Response status='+resp.status
+	// 			}
+	// 		}
+	// 	} catch(Exception e) {
+	// 		log.error("Caught exception:", e)
+	// 		return e.toString()
+	// 	}
+	// }
 	
 	
 	def autoService(TransactionSpec txnSpec, Configuration conf, String userid, String pswd) {
