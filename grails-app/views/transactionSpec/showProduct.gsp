@@ -4,6 +4,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
+        <g:javascript library="jquery-ui" />   
         %{-- <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" /> --}%
         <r:require module="bootstrap"/>
         <title>VPOS Request/Response</title>
@@ -17,7 +18,11 @@
             <li><a href="#tabs-3">Timings</a></li>
           </ul>
           <div id="tabs-1">
-            <h1>Product Details</h1>
+            <g:each in="${productDetailList}" status="x" var="productDetail">
+              <g:if test="${x > 0}">
+                <hr>
+              </g:if>
+              <h1>Product Details</h1>
               <table class="table" style="width:60%">
                 <thead>
                   <tr>
@@ -35,9 +40,16 @@
                 </tbody>
               </table>
               <br/>
+              <g:if test="${productDetail?.productImage}">
+                <div>
+                  <img src="data:image/jpg;base64,${productDetail.productImage}" alt="image goes here!!!">
+                </div>
+              </g:if>
               <g:if test="${productDetail?.priceDeals}">
-              <h1>Potential Deals</h1>
-                <table class="table table-striped table-bordered table-condensed" style="width:100%">
+              <!-- may want to color code qualifier vs getter on the deal lines -->
+                <h2>Potential Deals</h2>
+                %{-- <table class="table table-bordered table-condensed" style="width:100%"> --}%
+                <table class="table" style="width:100%">
                       <thead>
                           <tr>
                               <th>Deal Type</th>
@@ -55,8 +67,8 @@
                       </thead>
                       <tbody>
                       <g:each in="${productDetail.priceDeals}" status="i" var="deal">
-                          %{-- <tr class="${(i % 2) == 0 ? 'odd' : 'even'}"> --}%
-                          <tr>
+                          <tr class="${(deal.qualifier == 'true') ? 'success' : 'warning'}">
+                          %{-- <tr> --}%
                               <td>${fieldValue(bean:deal, field:'dealType')}</td>
                               <td>${fieldValue(bean:deal, field:'eventName')}</td>
                               <td>${fieldValue(bean:deal, field:'effectiveDate')}</td>
@@ -78,6 +90,7 @@
                       </tbody>
                 </table>  
               </g:if>
+            </g:each>
           </div>
           <div id="tabs-2">
               <h1>Request</h1>
@@ -98,7 +111,6 @@
             </ul>
           </div>
         </div>
-        %{-- <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script> --}%
         <script>
             $(function() {
               $( "#tabs" ).tabs();

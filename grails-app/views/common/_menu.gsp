@@ -11,7 +11,7 @@
     </div>
   </div>
 </div>  
-<div class="hdrmsg">
+<div class="hdrmsg" style="display:none;">
   <h1>Request submitted...</h1><img src="${createLinkTo(dir:'images',file:'spinner.gif')}" alt="Spinner" />
 </div> 
    

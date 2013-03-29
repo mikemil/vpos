@@ -12,15 +12,15 @@
 				<div class="span3">
 					<label for="sku">SKU:*</label>
 					<input type="text" id="lineItemSpecs-sku-0"
-						name="lineItemSpecs[0].sku"
-						value="${transactionSpecInstance?.lineItemSpecs?.sku}" 	required />	
+						name="lineItemSpecs[0].sku" required
+						value="${transactionSpecInstance?.lineItemSpecs?.sku}" />	
 				</div>	
 						
 				<div class="span3">	
 						<label for="quantity">Quantity:*</label>	
 						<input type="text" id="lineItemSpecs-quantity-0"	
-							name="lineItemSpecs[0].quantity"	
-							value="${transactionSpecInstance?.lineItemSpecs?.quantity}" required />	
+							name="lineItemSpecs[0].quantity" required	
+							value="${transactionSpecInstance?.lineItemSpecs?.quantity}" />	
 				</div>	
 							
 				<div class="span3">	

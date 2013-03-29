@@ -1,6 +1,6 @@
  (function () {
 
-  console.log("in siaf...");
+  //console.log("in siaf...");
 
   var vpos = {
 
@@ -67,12 +67,32 @@
       vpos.addRow("#discount0", "#discounttable", "discount", event );
     }, 
 
-    fade: function fade() {
+    fade: function fade(e) {
+      //validate input form required field
+      // below selector gets the list of fields that are 'required'
+      // var isFormValid = true;
+      // console.log('fade e='+e);
+      // console.log(this);
+      // $("form").find('input[required]').each(function(){
+      //   if ($.trim($(this).val()).length == 0){
+      //       isFormValid = false;
+      //   }
+      // });
+
+      // if (!isFormValid) {
+      //   e.preventDefault();
+      //   alert("Please fill in all the required fields (indicated by *)");
+      //   return;
+      // }
+      // console.log("after checks this=");
+      // console.log(this);
+      // //return; // test
+
       console.log('showing post msg, spinner and fading...');
       $('.hdrmsg').show();
       //$('.container-fluid').fadeToggle('slow');
       $('.container-fluid').fadeToggle(700);
-    }, 
+    },    
 
     initFocus: function initFocus() {
       $('#lineItemSpecs-sku-0').focus();
@@ -80,8 +100,8 @@
     },
 
     registerClickHandlers: function registerClickHandlers() {
-      //console.log('registering click handlers...');
-      $('#submit').click(this.fade);
+      console.log('registering click handlers...');
+      $('#submitBtn').click(this.fade);
       $("button.cloneLineItem").click(this.addItemRow);
       $("#btnTenderClone").click(this.addTenderRow);
       $("#couponBtn").click(this.addCoupon);

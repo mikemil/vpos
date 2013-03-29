@@ -11,3 +11,5 @@ target
 *.class
 target-eclipse/*
 *.sublime*
+.classpath
+.project

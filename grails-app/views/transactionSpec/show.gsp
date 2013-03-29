@@ -4,6 +4,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
+        <g:javascript library="jquery-ui" />
         <r:require module="bootstrap"/>
         <title>VPOS Request/Response</title>
     </head>

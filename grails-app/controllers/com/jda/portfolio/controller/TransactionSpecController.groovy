@@ -8,11 +8,11 @@ import com.jda.portfolio.domain.TransactionSpec
 
 
 // figure out why I need to set the qty whenever I create a second, third, etc lineitem, tender, etc
+//  - need to do required field checking and prevent the submit!!!
 
 // todo: handle multiple TransLineSpecs coming back - need to create a list of 
 //       product details and repeat the results on the page
 
-// try color coding the line for qualifier vs getter
 
 
 class TransactionSpecController {
@@ -43,14 +43,6 @@ class TransactionSpecController {
 		def conf = Configuration.get(TXNCREATE_CONFIG_ID)
 		if (conf != null) {
 			processRequest(conf)
-			//def transactionSpecInstance = new TransactionSpec(params)
-			//postValidate(transactionSpecInstance)
-			//def startMillis = System.currentTimeMillis()
-			//params.XMLRequest  = autoTransService.getXML(transactionSpecInstance)
-			//params.generateXMLMillis = System.currentTimeMillis() - startMillis
-			//startMillis = System.currentTimeMillis()
-			//params.XMLResponse = autoTransService.autoService(transactionSpecInstance, conf, params.userid, params.pswd)
-			//params.serviceMillis = System.currentTimeMillis() - startMillis
 		}
 		render (view:"show", model:params)
 	}
@@ -59,14 +51,6 @@ class TransactionSpecController {
 		def conf = Configuration.get(PRICELOOKUP_CONFIG_ID)
 		if (conf != null) {
 			processRequest(conf)
-			//def transactionSpecInstance = new TransactionSpec(params)
-			//postValidate(transactionSpecInstance)
-			//def startMillis = System.currentTimeMillis()
-			//params.XMLRequest  = autoTransService.getXML(transactionSpecInstance)
-			//params.generateXMLMillis = System.currentTimeMillis() - startMillis
-			//startMillis = System.currentTimeMillis()
-			//params.XMLResponse = autoTransService.autoService(transactionSpecInstance, conf, params.userid, params.pswd)
-			//params.serviceMillis = System.currentTimeMillis() - startMillis
 		}
 		render (view:"show", model:params)
 	}
@@ -75,19 +59,6 @@ class TransactionSpecController {
 		def conf = Configuration.get(PRODUCTLOOKUP_CONFIG_ID)
 		if (conf != null) {
 			processRequest(conf)
-			//def transactionSpecInstance = new TransactionSpec(params)
-			//postValidate(transactionSpecInstance)
-			//def startMillis = System.currentTimeMillis()
-			//params.XMLRequest  = autoTransService.getXML(transactionSpecInstance)
-			//params.generateXMLMillis = System.currentTimeMillis() - startMillis
-			//startMillis = System.currentTimeMillis()
-			//params.XMLResponse = autoTransService.autoService(transactionSpecInstance, conf, params.userid, params.pswd)
-			//params.serviceMillis = System.currentTimeMillis() - startMillis
-			//def startMillis = System.currentTimeMillis()
-			//todo may want to put a try/catch around this - or above - to catch the case where store server is not up!!!
-			//def transSpecGPath = new XmlSlurper().parseText(params.XMLResponse)
-			//params.slurpMillis = System.currentTimeMillis() - startMillis
-			//params.productDetail = buildProductDetail(transSpecGPath)
 		} 
 		render (view:"showProduct", model:params)
 	}
@@ -106,7 +77,7 @@ class TransactionSpecController {
 		startMillis = System.currentTimeMillis()
 		def transSpecGPath = new XmlSlurper().parseText(params.XMLResponse)
 		params.slurpMillis = System.currentTimeMillis() - startMillis
-		params.productDetail = buildProductDetail(transSpecGPath, conf.type)
+		params.productDetailList = buildProductDetail(transSpecGPath, conf.type)
 	}
 
 	def postValidate(transSpec)  {
@@ -159,47 +130,64 @@ class TransactionSpecController {
 		
 	}
 	
-	def ProductDetail buildProductDetail(transSpecGPathResult, configType) {
-		def lineSpec = transSpecGPathResult.TransBeanSpec.TransLineSpecs.TransLineSpec[0]
-		def prodDtl = new ProductDetail()
-		prodDtl.sku = lineSpec.sku.text().trim();
-		prodDtl.description = lineSpec.description.text().trim()
-		prodDtl.price = Integer.parseInt(lineSpec.total.text().trim())
+	def List buildProductDetail(transSpecGPathResult, configType) {
+		//todo iterate thru the line specs - not just one!
+		def productDetailList = []
+		def transLineSpecs = transSpecGPathResult.TransBeanSpec.TransLineSpecs;
+		transLineSpecs.children().each { lineSpec ->
+			//def lineSpec = transSpecGPathResult.TransBeanSpec.TransLineSpecs.TransLineSpec[0]
+			def prodDtl = new ProductDetail()
+			productDetailList << prodDtl
 
-		// this part only done for product lookup!
-		if (configType == Configuration.TYPE_PRODUCT_LOOKUP) {
-			if (lineSpec.PotentialDealSpecs) {
-				def deals = []
-				lineSpec.PotentialDealSpecs.children().each { dealSpec ->
-					// filter to include only these type deals (for now)
-					if (dealSpec.dealType.text().trim() == 'BREAKPOINT' ||
-						dealSpec.dealType.text().trim() == 'LIMIT' ||
-						dealSpec.dealType.text().trim() == 'BOGO' ) {
-
-						def deal = new PriceDeal()
-						deal.eventName = dealSpec.eventName.text().trim()
-						deal.eventNumber = dealSpec.eventNumber.text().trim()
-						deal.effectiveDate = dealSpec.effectiveDate.text().trim()
-						deal.dealType = dealSpec.dealType.text().trim()
-						deal.buyDescription = dealSpec.dealInfo.buyDesc.text().trim()
-						deal.buyOrder = dealSpec.dealInfo.buyOrder.text().trim()
-						deal.buyQty = dealSpec.dealInfo.buyQuantity.text().trim()
-						deal.getDescription = dealSpec.dealInfo.getDesc.text().trim()
-						deal.getOrder = dealSpec.dealInfo.getOrder.text().trim()
-						deal.getQty = dealSpec.dealInfo.getQuantity.text().trim()
-						deal.priceType = dealSpec.dealInfo.priceType.text().trim()
-						deal.priceValue = dealSpec.dealInfo.priceValue.text().trim()
-						deal.limitQty = dealSpec.dealInfo.limitQuantity.text().trim()
-						deal.qualifier = dealSpec.dealInfo.qualifier.text().trim()
-						deal.getter = dealSpec.dealInfo.getter.text().trim()
-						deals << deal
-					}
+			prodDtl.sku = lineSpec.sku.text().trim();
+			prodDtl.description = lineSpec.description.text().trim()
+			prodDtl.price = Integer.parseInt(lineSpec.total.text().trim())
+			if (lineSpec.imageByteString.text().trim().length() > 3) {
+				String imageByteString = lineSpec.imageByteString.text().trim()
+				String[] byteValues = imageByteString.substring(1, imageByteString.length() - 1).split(",")
+				Byte[]  byteArray = new Byte[byteValues.length]
+				def len = byteArray.length
+				for (int i = 0; i < len; i++) {
+					byteArray[i] = Byte.valueOf(byteValues[i].trim())
 				}
-				prodDtl.priceDeals = deals
-			} else println 'No PotentialDealSpecs found.'
+				prodDtl.productImage = byteArray.encodeBase64().toString()
+			}
+
+			// this part only done for product lookup!
+			if (configType == Configuration.TYPE_PRODUCT_LOOKUP) {
+				if (lineSpec.PotentialDealSpecs) {
+					def deals = []
+					lineSpec.PotentialDealSpecs.children().each { dealSpec ->
+						// filter to include only these type deals (for now)
+						if (dealSpec.dealType.text().trim() == 'BREAKPOINT' ||
+							dealSpec.dealType.text().trim() == 'LIMIT' ||
+							dealSpec.dealType.text().trim() == 'BOGO' ) {
+
+							def deal = new PriceDeal()
+							deal.eventName = dealSpec.eventName.text().trim()
+							deal.eventNumber = dealSpec.eventNumber.text().trim()
+							deal.effectiveDate = dealSpec.effectiveDate.text().trim()
+							deal.dealType = dealSpec.dealType.text().trim()
+							deal.buyDescription = dealSpec.dealInfo.buyDesc.text().trim()
+							deal.buyOrder = dealSpec.dealInfo.buyOrder.text().trim()
+							deal.buyQty = dealSpec.dealInfo.buyQuantity.text().trim()
+							deal.getDescription = dealSpec.dealInfo.getDesc.text().trim()
+							deal.getOrder = dealSpec.dealInfo.getOrder.text().trim()
+							deal.getQty = dealSpec.dealInfo.getQuantity.text().trim()
+							deal.priceType = dealSpec.dealInfo.priceType.text().trim()
+							deal.priceValue = dealSpec.dealInfo.priceValue.text().trim()
+							deal.limitQty = dealSpec.dealInfo.limitQuantity.text().trim()
+							deal.qualifier = dealSpec.dealInfo.qualifier.text().trim()
+							deal.getter = dealSpec.dealInfo.getter.text().trim()
+							deals << deal
+						}
+					}
+					prodDtl.priceDeals = deals
+				} else println 'No PotentialDealSpecs found.'
+			}
 		}
 
-		return prodDtl
+		return productDetailList
 	}
 
 	//************** Ajax related closures ************************

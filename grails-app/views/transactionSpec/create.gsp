@@ -21,11 +21,10 @@
                 <g:render template="coupon" />
                 <g:render template="discount" />
                 
-                <div>
-                    <button class="btn btn-primary" id="submit">Submit</button>
-                    %{-- <button class="btn btn-info">Set Defaults</button> --}%
-                </div>
             </g:form>
+            <div>
+                <button class="btn btn-primary" type="submit" id="submitBtn">Submit</button>
+            </div>
         </div>
 		<script type="text/javascript" src="../js/autotrans.js"></script>
         <script type="text/javascript" src="../js/showhide.js"></script>        

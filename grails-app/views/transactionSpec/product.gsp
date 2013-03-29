@@ -22,15 +22,13 @@
                 <g:render template="auth" />
                 <g:render template="header" />
                 <g:render template="lineitem" />
-				<!-- next two not really required -->
-                <!-- <g:render template="tender" /> -->
-                <!-- <g:render template="coupon" /> -->
                 <div>
-                    <button class="btn btn-primary" type="submit" id="submit">Submit</button>
+                    <button class="btn btn-primary" type="submit" id="submitBtn">Submit</button>
+                    %{-- <button class="btn btn-primary" type="button" id="submitBtn">Submit</button> doesn't submit because type not submit --}%
+                    %{-- <input class="btn btn-primary" type="submit" value="Submit"/> this works!!! --}%
                 </div>
             </g:form>
         </div>
         <script type="text/javascript" src="../js/autotrans.js"></script>
-        <script type="text/javascript" src="../js/showhide.js"></script> 
     </body>
 </html>

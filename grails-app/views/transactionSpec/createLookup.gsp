@@ -22,9 +22,8 @@
                 <g:render template="auth" />
                 <g:render template="header" />
                 <g:render template="lineitem" />
-				<div>
-                    <button class="btn btn-primary" type="submit" id="submit">Submit</button>
-                    %{-- <button class="btn btn-info" onclick="setDefaults();" >Set Defaults</button> --}%
+    			<div>
+                    <button class="btn btn-primary" type="submit" id="submitBtn">Submit</button>
                 </div>
             </g:form>
         </div>
